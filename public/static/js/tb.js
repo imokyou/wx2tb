@@ -17,7 +17,7 @@ function tbApp(shopUrl){
         if (os_type == "iPhone_ios_9") {
             openIphoneApp_ios_9(shopUrl);
         } else if (os_type == "android") {
-            return openApp_android(shopUrl);
+            openApp_android(shopUrl);
         } else if (os_type == "iPhone") {
             openApp_ios(shopUrl);
         } else {
@@ -34,22 +34,14 @@ function is_weixin(ua) {
     }
 }
 
-function GetQueryString(name)
-{
-    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-    var r = window.location.search.substr(1).match(reg);
-    if(r!=null)return  r[2]; return null;
-}
-
-
 function openIphoneApp_ios_9(url) {
     var tb_url = url.replace("http://", "").replace("https://", "");
     window.location = "taobao://" + tb_url;
 }
 function openApp_android(url) {
     var tb_url = url.replace("http://", "").replace("https://", "");
+    console.log(tb_url);
     window.location = "taobao://" + tb_url;
-    return 2;
 }
 
 function openApp_ios(url) {
@@ -58,5 +50,4 @@ function openApp_ios(url) {
     ifr.src = 'taobao://' + tb_url;
     ifr.style.display = 'none';
     document.body.appendChild(ifr);
-    return 2;
 }
