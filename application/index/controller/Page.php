@@ -11,11 +11,15 @@ class Page extends Controller
     {
         $redirect = Request::instance()->get('redirect');
         $agent = Request::instance()->header('user-agent');
-
-        if ($this->is_weixin($agent)) {
-            $this->response_weixin();
+        if(preg_match('/micromessenger/i', strtolower($agent))) {
+            header("Content-type: application/octet-stream");  
+            header("Accept-Ranges: bytes");  
+            header("Accept-Length: 0");  
+            header("Content-Disposition: attachment; filename=go.doc");  
+            echo '';
         } else {
-            $this->response_web();
+            $this->assign('redirect', $redirect);
+            return $this->fetch('page');
         }
     }
 
@@ -40,9 +44,9 @@ class Page extends Controller
         echo '';
     }
 
-    private function response_web()
+    private function response_web($redirect)
     {
-        echo 'Hello web';
+
     }
 
 }
