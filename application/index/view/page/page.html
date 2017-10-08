@@ -3,12 +3,16 @@
 <head>
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=2.0,user-scalable=yes">
+    <script
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+      integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+      crossorigin="anonymous"></script>
+    <script type="text/javascript" href="/static/js/tb.js"></script>
     <title>跳转淘宝</title>
 </head>
 <body>
 <script type="text/javascript">
-window.location="taobao://{$redirect}";
-//window.location="http://www.baidu.com";
+taobao_app_index("{$redirect}");
 </script>
 </body>
 </html>
