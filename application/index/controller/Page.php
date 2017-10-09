@@ -5,12 +5,15 @@ use think\Controller;
 use think\Request;
 use think\Response;
 
+use app\index\model\Material;
+
 class Page extends Controller
 {
     public function index()
     {
-        $redirect = Request::instance()->get('redirect');
+        $itemid = Request::instance()->get('itemid');
         $agent = Request::instance()->header('user-agent');
+
         if(preg_match('/micromessenger/i', strtolower($agent))) {
             header("Content-type: application/octet-stream");  
             header("Accept-Ranges: bytes");  
@@ -18,6 +21,13 @@ class Page extends Controller
             header("Content-Disposition: attachment; filename=go.doc");  
             echo '';
         } else {
+            $redirect = '';
+            $material = Material::get(intval($itemid));
+            if ($material) {
+                $redirect = $material->origin_url;
+                $material->click_count += 1;
+                $material->save();
+            }
             $this->assign('redirect', $redirect);
             return $this->fetch('page');
         }
@@ -33,20 +43,4 @@ class Page extends Controller
         }
         return $flag;
     }
-
-    private function response_weixin()
-    {
-        $file_name = 'go.doc';
-        header("Content-type: application/octet-stream");  
-        header("Accept-Ranges: bytes");  
-        header("Accept-Length: 0");  
-        header("Content-Disposition: attachment; filename=".$file_name);  
-        echo '';
-    }
-
-    private function response_web($redirect)
-    {
-
-    }
-
 }

@@ -10,4 +10,11 @@
 // +----------------------------------------------------------------------
 use think\Route;
 
+Route::rule('/', 'index/Index/index');
+Route::rule('__miss__', 'index/Index/index');
+
+Route::rule('surl/$', 'index/SUrl/index');
+
 Route::rule('go', 'index/Page/index');
+Route::rule('code', 'index/TaoCode/index');
+Route::rule('url2code', 'index/TaoCode/code');
