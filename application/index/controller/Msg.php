@@ -18,6 +18,10 @@ class Msg extends Controller
         $msg_sign = Request::instance()->get('msg_signature');
         $timestamp = Request::instance()->get('timestamp');
         $nonce = Request::instance()->get('nonce');
+        $echostr = Request::instance()->get('echostr');
+        if (!empty($echostr)) {
+            return $echostr;
+        }
 
         $xml = file_get_contents('php://input');
         Log::record($xml, 'info');
