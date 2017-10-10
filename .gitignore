@@ -3,3 +3,4 @@ composer.lock
 *.log
 application/extra/*
 application/database.php
+application/config.php
