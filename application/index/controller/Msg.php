@@ -54,7 +54,7 @@ class Msg extends Controller
             return 'success';
         }
 
-        $content = $origin_data['Content'].$ret['url'];
+        $content = $origin_data['Content'].'  '.$ret['url'];
         $data = array(
             'ToUserName' => $origin_data['FromUserName'],
             'FromUserName' => $origin_data['ToUserName'],

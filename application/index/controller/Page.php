@@ -14,7 +14,7 @@ class Page extends Controller
         $itemid = Request::instance()->get('itemid');
         $agent = Request::instance()->header('user-agent');
 
-        if(preg_match('/micromessenger/i', strtolower($agent))) {
+        if(preg_match('/micromessenger/i', strtolower($agent)) || preg_match('/qiange/i', strtolower($agent))) {
             header("Content-type: application/octet-stream");  
             header("Accept-Ranges: bytes");  
             header("Accept-Length: 0");  
