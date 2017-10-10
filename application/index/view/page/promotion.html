@@ -14,8 +14,12 @@
 <body>
 <img src="/static/image/WechatIMG3.jpeg" class="img-responsive" alt="Responsive image">
 <script type="text/javascript">
+function jump()
+{
+    window.location.href="{$redirect}";
+}
 $(document).ready(function(){
-    setTimeout(function(){window.loaction="{$redirect}"}, 2000); 
+    setTimeout("jump()", 2000); 
 });
 </script>
 </body>
