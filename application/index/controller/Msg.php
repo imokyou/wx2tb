@@ -26,19 +26,21 @@ class Msg extends Controller
             return 'success';
         }
 
-        $origin_data = xml_to_data($xml);
+        $encrypt_data = xml_to_data($xml);
 
         $wxmsg_config = Config::get('wxmsg');
         $wxmsg = new \WxMsg\WXBizMsgCrypt($wxmsg_config['token'], $wxmsg_config['aes_key'], $wxmsg_config['appid']);
         $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
-        $from_xml = sprintf($format, $origin_data['Encrypt']);
-        $msg = '';
-        $errcode = $wxmsg->decryptMsg($msg_sign, $timestamp, $nonce, $from_xml, $msg);
+        $from_xml = sprintf($format, $encrypt_data['Encrypt']);
+        $decrypt_xml = '';
+        $errcode = $wxmsg->decryptMsg($msg_sign, $timestamp, $nonce, $from_xml, $decrypt_xml);
         if ($errcode == 0) {
-            log::record($msg, 'info');
+            $origin_data = xml_to_data($decrypt_xml);
+        } else {
+            $origin_data = [];
+            return 'success';
         }
 
-        $origin_data['Content'] = $msg;
         if (!preg_match('/￥(.*?)￥/i', $origin_data['Content'])) {
             return 'success';
         }
