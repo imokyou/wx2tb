@@ -13,7 +13,7 @@ function tbApp(shopUrl){
     if(is_weixin(ua)){
         return 1;
     }else {
-        $("body").html("<div style='color:#000000;display: block;font-size: 22px;height: 1000px;margin-left:10px;text-align:center;'>正在跳转.....</div> ");
+        // $("body").html("<div style='color:#000000;display: block;font-size: 22px;height: 1000px;margin-left:10px;text-align:center;'>正在跳转.....</div> ");
         if (os_type == "iPhone_ios_9") {
             openIphoneApp_ios_9(shopUrl);
         } else if (os_type == "android") {
