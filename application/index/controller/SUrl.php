@@ -6,7 +6,7 @@ use think\Request;
 use think\Response;
 use think\Loader;
 use think\Config;
-use think\DB;
+use think\Db;
 
 use app\index\model\Material;
 
