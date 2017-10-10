@@ -13,9 +13,13 @@ use app\index\model\Material;
 class Msg extends Controller
 {
     public function index()
-    {
-        $xml = file_get_contents('php://input');
+    {   
+        $sign = Request::instance()->get('signature');
+        $msg_sign = Request::instance()->get('msg_signature');
+        $timestamp = Request::instance()->get('timestamp');
+        $nonce = Request::instance()->get('nonce');
 
+        $xml = file_get_contents('php://input');
         Log::record($xml, 'info');
 
         if (!trim($xml)) {
@@ -23,6 +27,18 @@ class Msg extends Controller
         }
 
         $origin_data = xml_to_data($xml);
+
+        $wxmsg_config = Config::get('wxmsg');
+        $wxmsg = new \WxMsg\WXBizMsgCrypt($wxmsg_config['token'], $wxmsg_config['aes_key'], $wxmsg_config['appid']);
+        $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
+        $from_xml = sprintf($format, $origin_data['Encrypt']);
+        $msg = '';
+        $errcode = $wxmsg->decryptMsg($msg_sign, $timestamp, $nonce, $from_xml, $msg);
+        if ($errcode == 0) {
+            log::record($msg, 'info');
+        }
+
+        $origin_data['Content'] = $msg;
         if (!preg_match('/￥(.*?)￥/i', $origin_data['Content'])) {
             return 'success';
         }

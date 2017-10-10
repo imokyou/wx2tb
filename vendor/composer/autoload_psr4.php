@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     'think\\composer\\' => array($vendorDir . '/topthink/think-installer/src'),
     'think\\' => array($baseDir . '/thinkphp/library/think'),
-    'ShortURL\\' => array($vendorDir . '/0x3_SDK/ShortURL')
+    'ShortURL\\' => array($vendorDir . '/0x3_SDK/ShortURL'),
+    'WxMsg\\' => array($vendorDir . '/WxMsg')
 );
