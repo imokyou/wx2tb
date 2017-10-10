@@ -65,7 +65,7 @@ class Msg extends Controller
         return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
     }
 
-    private function _convert_code($m, $account='')
+    private function _convert_code($m, $fromuser='')
     {
         $ret = array();
 
@@ -95,7 +95,7 @@ class Msg extends Controller
                     'origin_url_md5' => md5(urlencode($resp['url'])),
                     'local_url' => '',
                     'short_url' => '',
-                    'account' => $account
+                    'account' => $fromuser
                 ]);
                 $material->save();
 
