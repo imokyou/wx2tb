@@ -16,6 +16,10 @@
  *    <li>-40011: 生成xml失败</li>
  * </ul>
  */
+
+namespace WxMsg;
+
+
 class ErrorCodes
 {
 	public static $OK = 0;

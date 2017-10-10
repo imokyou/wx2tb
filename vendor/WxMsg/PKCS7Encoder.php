@@ -1,6 +1,7 @@
 <?php
+namespace WxMsg;
 
-include_once "ErrorCode.php";
+include_once "ErrorCodes.php";
 
 /**
  * PKCS7Encoder class

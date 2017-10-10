@@ -1,5 +1,7 @@
 <?php
-include_once "ErrorCode.php";
+namespace WxMsg;
+
+include_once "ErrorCodes.php";
 
 /**
  * XMLParse class
