@@ -33,14 +33,11 @@ class Page extends Controller
         }
     }
 
-    private function is_weixin($agent)
+    public function promotion()
     {
-        $flag = true;
-        if(preg_match('/micromessenger/i', strtolower($agent))) { 
-            $flag = true;
-        } else {
-            $flag = false;
-        }
-        return $flag;
+        $itemid = Request::instance()->get('itemid');
+        $redirect = '/jump?itemid='.$itemid;
+        $this->assign('redirect', $redirect);
+        return $this->fetch('promotion');
     }
 }

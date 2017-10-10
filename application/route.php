@@ -17,4 +17,5 @@ Route::rule('surl/$', 'index/SUrl/index');
 Route::rule('wx2tb/$', 'index/Msg/index');
 
 
-Route::rule('go', 'index/Page/index');
+Route::rule('go', 'index/Page/promotion');
+Route::rule('jump', 'index/Page/index');
