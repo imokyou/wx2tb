@@ -1,5 +1,5 @@
 <?php
-include_once "ErrorCodes.php";
+include_once "ErrorCode.php";
 
 /**
  * XMLParse class

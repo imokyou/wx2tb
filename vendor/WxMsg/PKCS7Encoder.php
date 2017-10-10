@@ -1,6 +1,6 @@
 <?php
 
-include_once "ErrorCodes.php";
+include_once "ErrorCode.php";
 
 /**
  * PKCS7Encoder class

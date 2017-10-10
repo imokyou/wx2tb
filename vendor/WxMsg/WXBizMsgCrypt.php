@@ -12,7 +12,7 @@ namespace WxMsg;
 include_once "SHA1.php";
 include_once "XMLParse.php";
 include_once "PKCS7Encoder.php";
-include_once "ErrorCodes.php";
+include_once "ErrorCode.php";
 
 /**
  * 1.第三方回复加密消息给公众平台；
