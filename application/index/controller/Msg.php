@@ -95,9 +95,9 @@ class Msg extends Controller
             } else {
                 $conv = new ConvertTimes;
                 $conv->data([
-                    'account': $fromuser,
-                    'date': date(),
-                    'times': 1
+                    'account' => $fromuser,
+                    'date' => date(),
+                    'times' => 1
                 ]);
                 $conv->save();
             }
