@@ -9,7 +9,7 @@ use think\Config;
 use think\Db;
 
 use app\index\model\Material;
-use app\index\mode\ConvertTimes;
+use app\index\model\ConvertTimes;
 
 class Msg extends Controller
 {
