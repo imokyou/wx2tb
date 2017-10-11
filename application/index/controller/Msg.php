@@ -91,7 +91,7 @@ class Msg extends Controller
                     return $ret;
                 }
                 $conv_time->times += 1;
-                $conv_time->save()
+                $conv_time->save();
             } else {
                 $conv = new ConvertTimes;
                 $conv->data([
