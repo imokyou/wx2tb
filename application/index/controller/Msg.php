@@ -77,6 +77,8 @@ class Msg extends Controller
         $info = Db::table('material')->where('code_md5', $code_md5)->select();
         if (!empty($info)) {
             $ret = array(
+                'c' => 0,
+                'm' => '',
                 'url' => $info[0]['short_url'],
                 'lurl' => $info[0]['origin_url'],
                 'code' => $info[0]['code']
@@ -125,6 +127,8 @@ class Msg extends Controller
                 $local_url = $config['domain'].'/go/?itemid='.$material->id; 
 
                 $ret['code'] = $m;
+                $ret['c'] = 0;
+                $ret['m'] = '';
                 $ret['lurl'] = $resp['url'];
                 $ret['url'] = $this->_lurl_to_surl($local_url);
 
