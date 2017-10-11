@@ -83,7 +83,7 @@ class Msg extends Controller
             );
         } else {
             # 检查是达到每日转换限量
-            $conv_time = ConvertTimes::get(['account' => $fromuser, 'date' => date()]);
+            $conv_time = ConvertTimes::get(['account' => $fromuser, 'date' => date('Y-m-d')]);
             $conv_limit = 10;
             if ($conv_time) {
                 if ($conv_time->times >= $conv_limit) {
@@ -96,7 +96,7 @@ class Msg extends Controller
                 $conv = new ConvertTimes;
                 $conv->data([
                     'account' => $fromuser,
-                    'date' => date(),
+                    'date' => date('Y-m-d'),
                     'times' => 1
                 ]);
                 $conv->save();
