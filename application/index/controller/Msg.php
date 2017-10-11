@@ -9,6 +9,7 @@ use think\Config;
 use think\Db;
 
 use app\index\model\Material;
+use app\index\mode\ConvertTimes;
 
 class Msg extends Controller
 {
@@ -49,19 +50,22 @@ class Msg extends Controller
             return 'success';
         }
 
-        $ret = $this->_convert_code($origin_data['Content'], $origin_data['FromUserName']);
-        if (!$ret) {
-            return 'success';
-        }
 
-        $content = $origin_data['Content'].'  '.$ret['url'];
         $data = array(
             'ToUserName' => $origin_data['FromUserName'],
             'FromUserName' => $origin_data['ToUserName'],
             'CreateTime' => time(),
             'MsgType' => 'text',
-            'Content' => $content
+            'Content' => ''
         );
+        $ret = $this->_convert_code($origin_data['Content'], $origin_data['FromUserName']);
+        if (empty($ret)) {
+            return 'success';
+        } elseif ($ret['c'] != 0) {
+            $data['Content'] = $ret['m'];
+        } else {
+            $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
+        }
         return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
     }
 
@@ -78,6 +82,25 @@ class Msg extends Controller
                 'code' => $info[0]['code']
             );
         } else {
+            # 检查是达到每日转换限量
+            $conv_time = ConvertTimes::get(['account' => $fromuser, 'date' => date()]);
+            $conv_limit = 10;
+            if ($conv_time) {
+                if ($conv_time->times >= $conv_limit) {
+                    $ret = array('c' => -1, 'm' => '您已达到每日转换上限'.$conv_limit.'条独立淘口令,请明天再来!');
+                    return $ret;
+                }
+                $conv_time->times += 1;
+                $conv_time->save()
+            } else {
+                $conv = new ConvertTimes;
+                $conv->data([
+                    'account': $fromuser,
+                    'date': date(),
+                    'times': 1
+                ]);
+                $conv->save();
+            }
             $config = Config::get('taokouling');
             $account = $config['accounts'][array_rand($config['accounts'])];
             $data = "username={$account['u']}&password={$account['p']}&text=".urlencode($m);

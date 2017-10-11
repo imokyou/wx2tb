@@ -16,3 +16,12 @@ CREATE TABLE IF NOT EXISTS `material` (
     `click_count` INT(11) NOT NULL DEFAULT '0' COMMENT '点击次数',
     PRIMARY KEY (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+CREATE TABLE IF NOT EXISTS `convert_times` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `account` VARCHAR(1024) NOT NULL COMMENT '转换人ID',
+    `date` DATE COMMENT '日期',
+    `times` INT(11) COMMENT '次数',
+    PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
