@@ -15,11 +15,11 @@ function tbApp(shopUrl){
     }else {
         // $("body").html("<div style='color:#000000;display: block;font-size: 22px;height: 1000px;margin-left:10px;text-align:center;'>正在跳转.....</div> ");
         if (os_type == "iPhone_ios_9") {
-            openIphoneApp_ios_9(shopUrl);
+            // openIphoneApp_ios_9(shopUrl);
         } else if (os_type == "android") {
             openApp_android(shopUrl);
         } else if (os_type == "iPhone") {
-            openApp_ios(shopUrl);
+            // openApp_ios(shopUrl);
         } else {
             window.location = shopUrl;
         }

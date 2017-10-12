@@ -14,13 +14,17 @@ class Page extends Controller
         $itemid = Request::instance()->get('itemid');
         $agent = Request::instance()->header('user-agent');
 
-        if(preg_match('/micromessenger/i', strtolower($agent)) && !preg_match('/iphone/i', strtolower($agent))) {
+        if(preg_match('/micromessenger/i', $agent) && !preg_match('/iphone/i', $agent)) {
             header("Content-type: application/octet-stream");  
             header("Accept-Ranges: bytes");  
             header("Accept-Length: 0");  
             header("Content-Disposition: attachment; filename=go.doc");  
             echo '';
         } else {
+            $show_iframe = '1';
+            if(preg_match('/iphone/i', $agent)) {
+                $show_iframe = '0';
+            }
             $redirect = '';
             $material = Material::get(intval($itemid));
             if ($material) {
@@ -28,6 +32,7 @@ class Page extends Controller
                 $material->click_count += 1;
                 $material->save();
             }
+            $this->assign('show_iframe', $show_iframe);
             $this->assign('redirect', $redirect);
             return $this->fetch('page');
         }
