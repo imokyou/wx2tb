@@ -8,4 +8,10 @@ class Index
         echo 'Hello World';
     }
 
+    public function agent()
+    {
+        $agent = Request::instance()->header('user-agent');
+        return $agent;
+    }
+
 }
