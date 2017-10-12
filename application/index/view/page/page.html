@@ -48,11 +48,11 @@
 <iframe id="aaa" name="aaa" src="{$redirect}" frameborder="0" scrolling="auto" width="100%" height="100%"  style="top: 0px;"></iframe>
 <?php } ?>
 
-<?php if($isweixin == '1' && $ostype == 'iphone_11')?>
+<?php if($isweixin == '1' && $ostype == 'iphone_11'){ ?>
 <div id="iphone11-jump">
     <a href="https://t.asczwa.com/taobao?backurl={$redirect}">如未能帮您自动跳转, 请点击此处购买...</a>
 </div>
-<?php } elseif($isweixin == '1' && $ostype == 'iphone') {?>
+<?php } elseif($isweixin == '1' && $ostype == 'iphone') { ?>
 <img src="http://wx2tb.oss-cn-beijing.aliyuncs.com/WechatIMG4.png" class="img-responsive" alt="Responsive image">
 <?php } ?>
 
