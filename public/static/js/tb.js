@@ -12,8 +12,9 @@ function tbApp(shopUrl){
         }
     }
     if(is_weixin(ua)){
-        $('#iphone11-jump').show();
-        $('#weixin-tip').show();
+        if (os_type == 'iPhone_ios_9') {
+            $('#weixin-tip').show();    
+        }
         return 1;
     }else {
         if (os_type == "iPhone_ios_9") {
