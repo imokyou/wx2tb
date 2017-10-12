@@ -12,6 +12,8 @@ function tbApp(shopUrl){
         }
     }
     if(is_weixin(ua)){
+        $('#iphone11-jump').show();
+        $('#weixin-tip').show();
         return 1;
     }else {
         if (os_type == "iPhone_ios_9") {
@@ -41,7 +43,7 @@ function openApp_android(url) {
 }
 
 function openApp_iphone(url) {
-    window.location="https://t.asczwa.com/taobao?backurl={$redirect}";
+    window.location="https://t.asczwa.com/taobao?backurl="+url;
 }
 
 function openIphoneApp_ios_9(url) {
