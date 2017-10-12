@@ -11,6 +11,7 @@
 use think\Route;
 
 Route::rule('/', 'index/Index/index');
+Route::rule('agent/$', 'index/Index/agent');
 Route::rule('__miss__', 'index/Index/index');
 
 Route::rule('surl/$', 'index/SUrl/index');
