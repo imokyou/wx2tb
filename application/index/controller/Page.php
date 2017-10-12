@@ -14,22 +14,26 @@ class Page extends Controller
         $itemid = Request::instance()->get('itemid');
         $agent = Request::instance()->header('user-agent');
         $ostype = 'android';
+        $isweixin = '0';
 
-        if(preg_match('/micromessenger/i', $agent) && !preg_match('/iphone/i', $agent)) {
-            header("Content-type: application/octet-stream");  
-            header("Accept-Ranges: bytes");  
-            header("Accept-Length: 0");  
-            header("Content-Disposition: attachment; filename=go.doc");  
-            echo '';
-        } else {
-            $show_iframe = '1';
-            if(preg_match('/iphone os 9/i', $agent)) {
-                $ostype = 'iphone_9';
-            } else if(preg_match('/iphone os 10/i', $agent)) {
-                $ostype = 'iphone_10';
-            } else if(preg_match('/iphone os 11/i', $agent)) {
-                $ostype = 'iphone_11';
+        if(preg_match('/iphone os 9/i', $agent) || preg_match('/iphone os 10/i', $agent)) {
+            $ostype = 'iphone';
+        } else if(preg_match('/iphone os 11/i', $agent)) {
+            $ostype = 'iphone_11';
+        } else if(preg_match('/iphone/i', $agent)) {
+            $ostype = 'iphone';
+        }
+
+        if(preg_match('/micromessenger/i', $agent)) {
+            $isweixin = '1';
+            if (!preg_match('/iphone/i', $agent)) {
+                header("Content-type: application/octet-stream");  
+                header("Accept-Ranges: bytes");  
+                header("Accept-Length: 0");  
+                header("Content-Disposition: attachment; filename=go.doc");  
+                echo '';    
             }
+        } else {
             $redirect = '';
             $material = Material::get(intval($itemid));
             if ($material) {
@@ -37,6 +41,7 @@ class Page extends Controller
                 $material->click_count += 1;
                 $material->save();
             }
+            $this->assign('isweixin', $isweixin);
             $this->assign('ostype', $ostype);
             $this->assign('redirect', $redirect);
             return $this->fetch('page');

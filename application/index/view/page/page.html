@@ -15,23 +15,56 @@
     <script type="text/javascript" src="/static/js/tb.js"></script>
     <style type="text/css">
         html { height:100%; }
-        #mask {
+        #iphone11-jump {
             height: 100px;
             width: 300px;
             margin: 50px auto;
         }
+        img{
+            max-width: 100%; 
+            height: auto;
+        }
+        .weixin-tip{
+            display: none; 
+            position: fixed; 
+            left:0; 
+            top:0; 
+            bottom:0; 
+            background: rgba(0,0,0,0.8); 
+            filter:alpha(opacity=80);  
+            height: 100%; 
+            width: 100%; 
+            z-index: 100;
+        }
+        .weixin-tip p{
+            text-align: center; 
+            margin-top: 10%; 
+            padding:0 5%;
+        }
     </style>
 </head>
 <body style="height: 100%; margin: 0; padding: 0;">
-<?php if($ostype == 'android'){ ?>
+<?php if($isweixin == '0'){ ?>
 <iframe id="aaa" name="aaa" src="{$redirect}" frameborder="0" scrolling="auto" width="100%" height="100%"  style="top: 0px;"></iframe>
-<?php } else if($ostype == 'iphone_11') { ?>
-<div id="mask">
+<?php } ?>
+
+<?php if($ostype == 'iphone_11' && $isweixin == '1') { ?>
+<div id="iphone11-jump">
     <a href="https://t.asczwa.com/taobao?backurl={$redirect}">未能帮您自动跳转, 请点击此处购买</a>
 </div>
 <?php } ?>
+
+<?php if($ostype == 'iphone' && $isweixin == '1'){ ?>
+<div class="weixin-tip">
+    <p>
+        <img src="live_weixin.png" alt="浏览器打开"/>
+    </p>
+</div>
+
+<?php } ?>
+
 <script type="text/javascript">
-tbApp("{$redirect}");
+//tbApp("{$redirect}");
 </script>
 </body>
 </html>

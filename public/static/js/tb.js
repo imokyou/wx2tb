@@ -5,7 +5,6 @@ function tbApp(shopUrl){
     var os_type='android';
     if(ua.indexOf("iphone")!=-1){
         if(ua.indexOf("iphone os 9")!=-1||ua.indexOf("iphone os 10")!=-1){
-            openIphoneApp_ios_9(shopUrl);
             os_type='iPhone_ios_9';
         }else{
             openApp_ios(shopUrl);
@@ -15,13 +14,12 @@ function tbApp(shopUrl){
     if(is_weixin(ua)){
         return 1;
     }else {
-        // $("body").html("<div style='color:#000000;display: block;font-size: 22px;height: 1000px;margin-left:10px;text-align:center;'>正在跳转.....</div> ");
         if (os_type == "iPhone_ios_9") {
-            // openIphoneApp_ios_9(shopUrl);
+            openApp_iphone(shopUrl);
         } else if (os_type == "android") {
             openApp_android(shopUrl);
         } else if (os_type == "iPhone") {
-            // openApp_ios(shopUrl);
+            openApp_iphone(shopUrl);
         } else {
             window.location = shopUrl;
         }
@@ -36,14 +34,20 @@ function is_weixin(ua) {
     }
 }
 
-function openIphoneApp_ios_9(url) {
-    var tb_url = url.replace("http://", "").replace("https://", "");
-    window.location = "taobao://" + tb_url;
-}
 function openApp_android(url) {
     var tb_url = url.replace("http://", "").replace("https://", "");
     console.log(tb_url);
     window.location = "taobao://" + tb_url;
+}
+
+function openApp_iphone(url) {
+    window.location="https://t.asczwa.com/taobao?backurl={$redirect}";
+}
+
+function openIphoneApp_ios_9(url) {
+    var tb_url = url.replace("http://", "").replace("https://", "");
+    window.location.href=tb_url;
+    // window.location = "taobao://" + tb_url;
 }
 
 function openApp_ios(url) {
