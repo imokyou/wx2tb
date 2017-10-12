@@ -16,6 +16,17 @@ class Page extends Controller
         $ostype = 'android';
         $isweixin = '0';
 
+        if(preg_match('/micromessenger/i', $agent)) {
+            $isweixin = '1';
+            if (!preg_match('/iphone/i', $agent)) {
+                header("Content-type: application/octet-stream");  
+                header("Accept-Ranges: bytes");  
+                header("Accept-Length: 0");  
+                header("Content-Disposition: attachment; filename=go.doc");  
+                return '';    
+            }
+        }
+
         if(preg_match('/iphone os 9/i', $agent) || preg_match('/iphone os 10/i', $agent)) {
             $ostype = 'iphone';
         } else if(preg_match('/iphone os 11/i', $agent)) {
@@ -24,28 +35,17 @@ class Page extends Controller
             $ostype = 'iphone';
         }
 
-        if(preg_match('/micromessenger/i', $agent)) {
-            $isweixin = '1';
-            if (!preg_match('/iphone/i', $agent)) {
-                header("Content-type: application/octet-stream");  
-                header("Accept-Ranges: bytes");  
-                header("Accept-Length: 0");  
-                header("Content-Disposition: attachment; filename=go.doc");  
-                echo '';    
-            }
-        } else {
-            $redirect = '';
-            $material = Material::get(intval($itemid));
-            if ($material) {
-                $redirect = $material->origin_url;
-                $material->click_count += 1;
-                $material->save();
-            }
-            $this->assign('isweixin', $isweixin);
-            $this->assign('ostype', $ostype);
-            $this->assign('redirect', $redirect);
-            return $this->fetch('page');
+        $redirect = '';
+        $material = Material::get(intval($itemid));
+        if ($material) {
+            $redirect = $material->origin_url;
+            $material->click_count += 1;
+            $material->save();
         }
+        $this->assign('isweixin', $isweixin);
+        $this->assign('ostype', $ostype);
+        $this->assign('redirect', $redirect);
+        return $this->fetch('page');
     }
 
     public function promotion()
