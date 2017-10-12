@@ -13,6 +13,7 @@ class Page extends Controller
     {
         $itemid = Request::instance()->get('itemid');
         $agent = Request::instance()->header('user-agent');
+        $ostype = 'android';
 
         if(preg_match('/micromessenger/i', $agent) && !preg_match('/iphone/i', $agent)) {
             header("Content-type: application/octet-stream");  
@@ -22,8 +23,12 @@ class Page extends Controller
             echo '';
         } else {
             $show_iframe = '1';
-            if(preg_match('/iphone/i', $agent)) {
-                $show_iframe = '0';
+            if(preg_match('/iphone os 9/i', $agent)) {
+                $ostype = 'iphone_9';
+            } else if(preg_match('/iphone os 10/i', $agent)) {
+                $ostype = 'iphone_10';
+            } else if(preg_match('/iphone os 11/i', $agent)) {
+                $ostype = 'iphone_11';
             }
             $redirect = '';
             $material = Material::get(intval($itemid));
@@ -32,7 +37,7 @@ class Page extends Controller
                 $material->click_count += 1;
                 $material->save();
             }
-            $this->assign('show_iframe', $show_iframe);
+            $this->assign('ostype', $ostype);
             $this->assign('redirect', $redirect);
             return $this->fetch('page');
         }

@@ -5,8 +5,10 @@ function tbApp(shopUrl){
     var os_type='android';
     if(ua.indexOf("iphone")!=-1){
         if(ua.indexOf("iphone os 9")!=-1||ua.indexOf("iphone os 10")!=-1){
+            openIphoneApp_ios_9(shopUrl);
             os_type='iPhone_ios_9';
         }else{
+            openApp_ios(shopUrl);
             os_type='iPhone';
         }
     }
