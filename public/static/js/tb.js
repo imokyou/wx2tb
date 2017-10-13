@@ -7,14 +7,11 @@ function tbApp(shopUrl){
         if(ua.indexOf("iphone os 9")!=-1||ua.indexOf("iphone os 10")!=-1){
             os_type='iPhone_ios_9';
         }else{
-            openApp_ios(shopUrl);
             os_type='iPhone';
         }
     }
     if(is_weixin(ua)){
-        if (os_type == 'iPhone_ios_9') {
-            $('#weixin-tip').show();    
-        }
+        $('#weixin-tip').show();  
         return 1;
     }else {
         if (os_type == "iPhone_ios_9") {
