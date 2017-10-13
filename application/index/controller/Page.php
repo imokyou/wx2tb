@@ -58,6 +58,15 @@ class Page extends Controller
 
     public function touch()
     {
+        $agent = Request::instance()->header('user-agent');
+        if(preg_match('/iphone os 9/i', $agent) || preg_match('/iphone os 10/i', $agent)) {
+            $ostype = 'ios_10';
+        } else if(preg_match('/iphone os 11/i', $agent)) {
+            $ostype = 'ios_11';
+        } else if(preg_match('/iphone/i', $agent)) {
+            $ostype = 'ios_10';
+        }
+        $this->assign('ostype', $ostype);
         return $this->fetch('touch');   
     }
 }
