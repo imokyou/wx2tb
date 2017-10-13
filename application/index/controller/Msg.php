@@ -124,7 +124,8 @@ class Msg extends Controller
                 ]);
                 $material->save();
 
-                $local_url = $config['domain'].'/go/?itemid='.$material->id; 
+                $local_domain = $config['domains'][array_rand($config['domains'])];
+                $local_url = $local_domain.'/go/?itemid='.$material->id; 
 
                 $ret['code'] = $m;
                 $ret['c'] = 0;

@@ -15,6 +15,8 @@ Route::rule('agent/$', 'index/Index/agent');
 Route::rule('__miss__', 'index/Index/index');
 
 Route::rule('surl/$', 'index/SUrl/index');
+Route::rule('surl/refresh$', 'index/SUrl/refresh');
+
 Route::rule('wx2tb/$', 'index/Msg/index');
 
 
