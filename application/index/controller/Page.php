@@ -55,4 +55,9 @@ class Page extends Controller
         $this->assign('redirect', $redirect);
         return $this->fetch('promotion');
     }
+
+    public function touch()
+    {
+        return $this->fetch('touch');   
+    }
 }

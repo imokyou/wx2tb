@@ -22,3 +22,5 @@ Route::rule('wx2tb/$', 'index/Msg/index');
 
 Route::rule('go', 'index/Page/promotion');
 Route::rule('jump', 'index/Page/index');
+
+Route::rule('touch', 'index/Page/touch');
