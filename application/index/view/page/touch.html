@@ -31,7 +31,7 @@
 </head>
 <body>
 <div id="foz" data-href="http://www.baidu.com">Google</div>
-<a href="http://www.baidu.com"  target="_blank" id="btn-db">baidu</a>
+<a href="taobao://h5.m.taobao.com/awp/core/detail.htm?id=534959516777"  target="_blank" id="btn-db">taobao</a>
 <a id="btn-a" href="https://t.asczwa.com/taobao?backurl=https://h5.m.taobao.com/awp/core/detail.htm?id=534959516777">点击跳转</a>
 <img src="https://t.asczwa.com/taobao?backurl=https://h5.m.taobao.com/awp/core/detail.htm?id=534959516777" />
 
@@ -45,10 +45,13 @@ function ios11()
 
 function ios10()
 {
+    window.location.href="taobao://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
+    /*
     var ifr = document.createElement('iframe');
-    ifr.src = "https://t.asczwa.com/taobao?backurl=https://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
-    ifr.style.display = none;
+    ifr.src = "taobao://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
+    ifr.style.display = 'none';
     document.body.appendChild(ifr);
+    */
 }
 
 
