@@ -56,6 +56,17 @@
 </div>
 
 <script type="text/javascript">
+<?php if($ostype == "iphone_11"){ ?>
+function iphone_11()
+{
+    window.location="https://t.asczwa.com/taobao?backurl={$redirect}";
+}
+
+var wtip = document.getElementById('weixin-tip');
+wtip.addEventListener("touchstart", function(evt) { iphone_11();}, false);
+wtip.addEventListener("touchmove", function(evt) { iphone_11();}, false);
+wtip.addEventListener("touchend", function(evt) {iphone_11();}, false);
+<?php } ?>
 tbApp("{$redirect}");
 </script>
 </body>

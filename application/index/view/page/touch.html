@@ -45,7 +45,7 @@ function ios11()
 
 function ios10()
 {
-    window.location.href="taobao://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
+    window.location.href="https://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
     /*
     var ifr = document.createElement('iframe');
     ifr.src = "taobao://h5.m.taobao.com/awp/core/detail.htm?id=534959516777";
@@ -53,8 +53,15 @@ function ios10()
     document.body.appendChild(ifr);
     */
 }
+document.getElementById("foz").addEventListener("click", function(evt) {
+    <?php if($ostype == 'ios_11'){ ?>
+    ios11();
+    <?php }else{ ?>
+    ios10();
+    <?php } ?>
+}, false);
 
-
+/*
 document.getElementById("foz").addEventListener("touchstart", function(evt) {
     <?php if($ostype == 'ios_11'){ ?>
     ios11();
@@ -76,6 +83,8 @@ document.getElementById("foz").addEventListener("touchend", function(evt) {
     ios10();
     <?php } ?>
 }, false);
+*/
+
 </script>
 
 </body>
