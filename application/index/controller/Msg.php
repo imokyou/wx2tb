@@ -47,7 +47,11 @@ class Msg extends Controller
         }
 
         if (!preg_match('/￥(.*?)￥/i', $origin_data['Content'])) {
-            return 'success';
+            if(ctype_alnum($origin_data['Content'])) {
+                $origin_data['Content'] = '￥'.$origin_data['Content'].'￥';
+            } else {
+                return 'success';    
+            }
         }
 
 
