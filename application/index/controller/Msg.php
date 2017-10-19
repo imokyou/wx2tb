@@ -68,7 +68,7 @@ class Msg extends Controller
         } elseif ($ret['c'] != 0) {
             $data['Content'] = $ret['m'];
         } else {
-            $data['Content'] = '你要找的【'.$ret['content'].'】在这里~, 点击链接下单哦~  '.$ret['url'];
+            $data['Content'] = '您要找的【'.$ret['content'].'】在这里~, 点击链接下单哦~  '.$ret['url'];
             // $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
         }
         return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
