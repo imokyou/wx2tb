@@ -68,7 +68,8 @@ class Msg extends Controller
         } elseif ($ret['c'] != 0) {
             $data['Content'] = $ret['m'];
         } else {
-            $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
+            $data['Content'] = '你要找的【'.$ret['content'].'】在这里~, 点击链接下单哦~  '.$ret['url'];
+            // $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
         }
         return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
     }
@@ -83,6 +84,7 @@ class Msg extends Controller
             $ret = array(
                 'c' => 0,
                 'm' => '',
+                'content' => $info[0]['content'],
                 'url' => $info[0]['short_url'],
                 'lurl' => $info[0]['origin_url'],
                 'code' => $info[0]['code']
@@ -118,6 +120,7 @@ class Msg extends Controller
                 $material = new Material;
                 $material->data([
                     'title' => $m,
+                    'content' => $resp['content']
                     'code' => $m,
                     'code_md5' => md5(urlencode($m)),
                     'mid' => '100000',
@@ -125,7 +128,8 @@ class Msg extends Controller
                     'origin_url_md5' => md5(urlencode($resp['url'])),
                     'local_url' => '',
                     'short_url' => '',
-                    'account' => $fromuser
+                    'account' => $fromuser,
+                    'ext' => json_encode($resp)
                 ]);
                 $material->save();
 
@@ -135,6 +139,7 @@ class Msg extends Controller
                 $ret['code'] = $m;
                 $ret['c'] = 0;
                 $ret['m'] = '';
+                $ret['content'] = $resp['content'];
                 $ret['lurl'] = $resp['url'];
                 $ret['url'] = $this->_lurl_to_surl($local_url);
 
