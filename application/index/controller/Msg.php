@@ -106,6 +106,7 @@ class Msg extends Controller
             $config = Config::get('taokouling');
             $account = $config['accounts'][array_rand($config['accounts'])];
             $data = "username={$account['u']}&password={$account['p']}&text=".urlencode($m);
+            Log::record($data);
             $resp = curl_post($config['api'], $data);
             if ($resp) {
                 $resp = json_decode($resp, true);
@@ -136,6 +137,9 @@ class Msg extends Controller
                 $material->local_url = $local_url;
                 $material->short_url = $ret['url'];
                 $material->save();
+            } else {
+                $ret = array('c' => -1, 'm' => '淘口令解密失败,请重试');
+                    return $ret;
             }
         }
         return $ret;
