@@ -120,7 +120,7 @@ class Msg extends Controller
                 $material = new Material;
                 $material->data([
                     'title' => $m,
-                    'content' => $resp['content']
+                    'content' => $resp['content'],
                     'code' => $m,
                     'code_md5' => md5(urlencode($m)),
                     'mid' => '100000',
