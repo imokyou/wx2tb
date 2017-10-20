@@ -55,10 +55,10 @@ class Msg extends Controller
                 return 'success';
             }
         } else {
-            $taobao_code = '￥'.$code_match[0].'￥';
+            $taobao_code = $code_match[0];
         }
 
-        $data_word = array(
+        $data = array(
             'ToUserName' => $origin_data['FromUserName'],
             'FromUserName' => $origin_data['ToUserName'],
             'CreateTime' => time(),
