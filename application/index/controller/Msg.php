@@ -33,6 +33,18 @@ class Msg extends Controller
         }
 
         $encrypt_data = xml_to_data($xml);
+        $wxmsg_config = Config::get('wxmsg');
+        $wxmsg = new \WxMsg\WXBizMsgCrypt($wxmsg_config['token'], $wxmsg_config['aes_key'], $wxmsg_config['appid']);
+        $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
+        $from_xml = sprintf($format, $encrypt_data['Encrypt']);
+        $decrypt_xml = '';
+        $errcode = $wxmsg->decryptMsg($msg_sign, $timestamp, $nonce, $from_xml, $decrypt_xml);
+        if ($errcode == 0) {
+            $origin_data = xml_to_data($decrypt_xml);
+        } else {
+            return 'success';
+        }
+
         $taobao_code = '';
         preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
         if(empty($code_match)) {
@@ -44,9 +56,34 @@ class Msg extends Controller
         } else {
             $taobao_code = $code_match[0];
         }
+
+        $resp_data = array(
+            'ToUserName' => $origin_data['FromUserName'],
+            'FromUserName' => $origin_data['ToUserName'],
+            'CreateTime' => time(),
+            'MsgType' => 'text',
+            'Content' => ''
+        );
+
+        $conv_time = ConvertTimes::get(['account' => $origin_data['FromUserName'], 'date' => date('Y-m-d')]);
+        $conv_limit = 100;
+        if ($conv_time && $conv_time->times >= $conv_limit) {
+            $resp_data['Content'] = '您已达到每日转换上限'.$conv_limit.'条独立淘口令,请明天再来!';
+            return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+        }
+
+        $conv = new ConvertTimes;
+        $conv->data([
+            'account' => $origin_data['FromUserName'],
+            'date' => date('Y-m-d'),
+            'times' => 1
+        ]);
+        $conv->save();
+
         $this->_create_task($taobao_code, $origin_data['Content'], $origin_data['FromUserName']);
-        $data['Content'] = '请稍后,正在为您查询...';
-        return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+
+        $resp_data['Content'] = '请稍后,正在为您查询...';
+        return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
 
 
         /*
