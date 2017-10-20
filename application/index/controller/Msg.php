@@ -46,23 +46,44 @@ class Msg extends Controller
             return 'success';
         }
 
-        if (!preg_match('/￥(.*?)￥/i', $origin_data['Content'])) {
+        $taobao_code = '';
+        preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
+        if(empty($code_match)) {
             if(ctype_alnum($origin_data['Content'])) {
-                $origin_data['Content'] = '￥'.$origin_data['Content'].'￥';
+                $taobao_code = '￥'.$origin_data['Content'].'￥';
             } else {
-                return 'success';    
+                return 'success';
             }
+        } else {
+            $taobao_code = '￥'.$code_match[0].'￥';
         }
 
-
-        $data = array(
+        $data_word = array(
             'ToUserName' => $origin_data['FromUserName'],
             'FromUserName' => $origin_data['ToUserName'],
             'CreateTime' => time(),
             'MsgType' => 'text',
             'Content' => ''
         );
-        $ret = $this->_convert_code($origin_data['Content'], $origin_data['FromUserName']);
+
+        /*
+        $data_word_pic = array(
+            'ToUserName' => $origin_data['FromUserName'],
+            'FromUserName' => $origin_data['ToUserName'],
+            'CreateTime' => time(),
+            'MsgType' => 'news',
+            'ArticleCount' => 1,
+            'Articles' => array(
+                 array(
+                    'Title' => '',
+                    'Description' => '',
+                    'PicUrl' => '',
+                    'Url' => ''
+                )
+            )
+        );*/
+
+        $ret = $this->_convert_code($taobao_code, $origin_data['FromUserName']);
         if (empty($ret)) {
             return 'success';
         } elseif ($ret['c'] != 0) {
@@ -145,6 +166,7 @@ class Msg extends Controller
 
                 $material->local_url = $local_url;
                 $material->short_url = $ret['url'];
+                $material->title = $ret['content'];
                 $material->save();
             } else {
                 $ret = array('c' => -1, 'm' => '淘口令解密失败,请重试');
