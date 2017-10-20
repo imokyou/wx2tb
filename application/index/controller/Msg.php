@@ -10,6 +10,7 @@ use think\Db;
 
 use app\index\model\Material;
 use app\index\model\ConvertTimes;
+use app\index\model\UserTask;
 
 class Msg extends Controller
 {
@@ -32,7 +33,23 @@ class Msg extends Controller
         }
 
         $encrypt_data = xml_to_data($xml);
+        $taobao_code = '';
+        preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
+        if(empty($code_match)) {
+            if(ctype_alnum($origin_data['Content'])) {
+                $taobao_code = '￥'.$origin_data['Content'].'￥';
+            } else {
+                return 'success';
+            }
+        } else {
+            $taobao_code = $code_match[0];
+        }
+        $this->_create_task($taobao_code, $origin_data['FromUserName']);
+        $data['Content'] = '请稍后,正在为您查询...';
+        return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
 
+
+        /*
         $wxmsg_config = Config::get('wxmsg');
         $wxmsg = new \WxMsg\WXBizMsgCrypt($wxmsg_config['token'], $wxmsg_config['aes_key'], $wxmsg_config['appid']);
         $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
@@ -66,23 +83,6 @@ class Msg extends Controller
             'Content' => ''
         );
 
-        /*
-        $data_word_pic = array(
-            'ToUserName' => $origin_data['FromUserName'],
-            'FromUserName' => $origin_data['ToUserName'],
-            'CreateTime' => time(),
-            'MsgType' => 'news',
-            'ArticleCount' => 1,
-            'Articles' => array(
-                 array(
-                    'Title' => '',
-                    'Description' => '',
-                    'PicUrl' => '',
-                    'Url' => ''
-                )
-            )
-        );*/
-
         $ret = $this->_convert_code($taobao_code, $origin_data['FromUserName']);
         if (empty($ret)) {
             return 'success';
@@ -92,9 +92,41 @@ class Msg extends Controller
             $data['Content'] = '您要找的【'.$ret['content'].'】在这里~, 点击链接下单哦~  '.$ret['url'];
             // $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
         }
-        return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+        */
     }
 
+    private function _create_task($code, $fromuser='')
+    {
+        $code_md5 = md5(urlencode($code));
+        $material = Material::get(['code_md5' => $code_md5]);
+        if(empty($info)) {
+            $material = new Material;
+            $material->data([
+                'title' => '',
+                'content' => '',
+                'code' => $code,
+                'code_md5' => $code_md5,
+                'mid' => '100000',
+                'origin_url' => '',
+                'origin_url_md5' => '',
+                'local_url' => '',
+                'short_url' => '',
+                'account' => $fromuser,
+                'ext' => ''
+            ]);
+            $material->save();
+        }
+        $user_task = new UserTask;
+        $user_task->data([
+            'material_id' => $info['id'],
+            'account' => $fromuser,
+            'is_sended' => 0
+        ]);
+        $user_task->save();
+    }
+
+
+    /*
     private function _convert_code($m, $fromuser='')
     {
         $ret = array();
@@ -175,6 +207,7 @@ class Msg extends Controller
         }
         return $ret;
     }
+    */
 
     private function _lurl_to_surl($lurl)
     {

@@ -29,3 +29,26 @@ CREATE TABLE IF NOT EXISTS `convert_times` (
     `update_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
     PRIMARY KEY (`id`) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE IF NOT EXISTS `user_click` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `material_id` INT(11) NOT NULL COMMENT '物料ID',
+    `agent` VARCHAR(1024) COMMENT '用户代理',
+    `create_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+CREATE TABLE IF NOT EXISTS `user_tasks` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `material_id` INT(11) NOT NULL COMMENT '物料ID',
+    `account` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '转换人ID',
+    `is_sended` INT(11) NOT NULL DEFAULT '0' COMMENT '是否发送了',
+    `create_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
