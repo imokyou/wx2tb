@@ -155,7 +155,7 @@ class Msg extends Controller
         }
         $user_task = new UserTask;
         $user_task->data([
-            'material_id' => $info['id'],
+            'material_id' => $material->id,
             'account' => $fromuser,
             'is_sended' => 0
         ]);
