@@ -44,7 +44,7 @@ class Msg extends Controller
         } else {
             $taobao_code = $code_match[0];
         }
-        $this->_create_task($taobao_code, $origin_data['FromUserName']);
+        $this->_create_task($taobao_code, $origin_data['Content'], $origin_data['FromUserName']);
         $data['Content'] = '请稍后,正在为您查询...';
         return Response::create($data, 'xml')->code(200)->options(['root_node'=> 'xml']);
 
@@ -95,14 +95,14 @@ class Msg extends Controller
         */
     }
 
-    private function _create_task($code, $fromuser='')
+    private function _create_task($code, $origin_content, $fromuser='')
     {
         $code_md5 = md5(urlencode($code));
         $material = Material::get(['code_md5' => $code_md5]);
         if(empty($info)) {
             $material = new Material;
             $material->data([
-                'title' => '',
+                'title' => $origin_content,
                 'content' => '',
                 'code' => $code,
                 'code_md5' => $code_md5,
