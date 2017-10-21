@@ -67,7 +67,7 @@ def decrynt_code(task):
         ret['ext'] = resp.content
 
         domain = TKL['domains'][randint(0, len(TKL['domains'])-1)]
-        ret['local_url'] = domain+'/jump?itemid='+str(task['material_id'])
+        ret['local_url'] = domain+'/go?itemid='+str(task['material_id'])
     return ret
 
 
