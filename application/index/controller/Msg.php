@@ -51,7 +51,7 @@ class Msg extends Controller
                 'FromUserName' => $origin_data['ToUserName'],
                 'CreateTime' => time(),
                 'MsgType' => 'text',
-                'Content' => "哎哟喂~~同志,\n现在淘宝和天猫链接终于可以在微信上直接打开了\n,只需要发送淘宝或天猫口令给我，系统就会自动将口令转为短链接，实现一秒进店! "
+                'Content' => "哎哟喂~~同志\n现在淘宝和天猫链接终于可以在微信上直接打开了\n只需要发送淘宝或天猫口令给我，系统就会自动将口令转为短链接，实现一秒进店! "
             );
             return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
         }
