@@ -4,3 +4,5 @@ composer.lock
 application/extra/*
 application/database.php
 application/config.php
+pyscript/res/*
+*.pyc

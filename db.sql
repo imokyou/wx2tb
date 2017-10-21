@@ -20,6 +20,19 @@ CREATE TABLE IF NOT EXISTS `material` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+CREATE TABLE IF NOT EXISTS `material_img` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `material_id` INT(11) NOT NULL COMMENT '物料ID',
+    `media_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '图片上传在微信服务器的ID',
+    `url` VARCHAR(512) NOT NULL DEFAULT '原始地址',
+    `url_md5` VARCHAR(64) NOT NULL DEFAULT '原始地址MD5值,用于去重',
+    `create_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
 CREATE TABLE IF NOT EXISTS `convert_times` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `account` VARCHAR(1024) NOT NULL COMMENT '转换人ID',

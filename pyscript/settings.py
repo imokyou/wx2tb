@@ -12,12 +12,33 @@ DATABASE = {
     'user': 'root',
     'passwd': 'lupin2008cn',
     'port': 3306,
-    'db_name': 'neihanshequ'
+    'db_name': 'wx2tb'
 }
 
-# 消息推送时间点
-TIME_POINTS = [15, 16]
+WX = {
+    'token_api': 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wxb1197b6e59b79e6d&secret=1e1a1d683643f63cf23a98be2b1ed72c',
+    'msg_api': 'https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=',
+    'media_api': 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token='
+}
 
-WX_TOKEN_API = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx564a50039dd91934&secret=13340cc1f1f0c1e1cece28e2a2d826a2'
 
-WX_MSG_API = 'https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token='
+TKL = {
+    'accounts': [
+        {'u': 'imokyou', 'p': '7457267293'},
+        {'u': '18664783659', 'p': '7457267293'}
+    ],
+    'api': 'http://www.taokouling.com/index.php?m=api&a=taokoulingjm',
+    'domains': ['http://tb.js101.local']
+}
+SHORT_URL = {
+    'key': 'kJyVQncjui',
+    'secret': 'BFLXqtbibRkedWTnPNOpWFHQpUPNitWX',
+    'api': [
+        'https://0x3.me/apis/authorize/getCode',
+        'https://0x3.me/apis/authorize/getAccessToken'
+    ],
+    'service_api': {
+        'add': 'https://0x3.me/apis/urls/add',
+        'modify': 'https://0x3.me/apis/url/modify'
+    }
+}

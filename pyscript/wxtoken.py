@@ -5,7 +5,7 @@ import json
 from time import sleep, time
 from settings import *
 
-_filename = '../application/extra/access_token.txt'
+_filename = '../application/extra/wx_access_token.txt'
 
 
 def get_token():
@@ -25,7 +25,7 @@ def get_token():
             data = {}
             is_expired = True
     if is_expired:
-        resp = requests.get(WX_TOKEN_API)
+        resp = requests.get(WX['token_api'])
         if resp and resp.status_code == 200:
             data = resp.json()
             if 'access_token' in data:
