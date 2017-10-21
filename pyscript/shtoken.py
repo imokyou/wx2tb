@@ -6,7 +6,7 @@ import hashlib
 from time import sleep, time
 from settings import *
 
-pwd = os.getcwd()
+pwd = os.path.dirname(os.path.realpath(__file__))
 _filename = pwd + 'res/short_url_access_token.txt'
 
 
