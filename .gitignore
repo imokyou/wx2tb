@@ -5,4 +5,5 @@ application/extra/*
 application/database.php
 application/config.php
 pyscript/res/*
+pyscript/settings.py
 *.pyc
