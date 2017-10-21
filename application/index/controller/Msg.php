@@ -45,6 +45,25 @@ class Msg extends Controller
             return 'success';
         }
 
+        if($origin_data['MsgType'] == 'event' && $origin_data['Event'] == 'subscribe') {
+            $resp_data = array(
+                'ToUserName' => $origin_data['FromUserName'],
+                'FromUserName' => $origin_data['ToUserName'],
+                'CreateTime' => time(),
+                'MsgType' => 'text',
+                'Content' => '哎哟喂，同志
+                现在淘宝和天猫链接终于可以在微信上直接打开了
+                只需要发送淘宝或天猫口令给我，系统就会自动将口令转为短链接，实现一秒进店啦！
+
+                例如发送“【我剁手都要买的宝贝（专用于东风标致4008钥匙包扣 雪铁龙钥匙包c4l c6钥匙包壳套标致），快来和我一起瓜分红I包】http://v.cvz5.com/h.uRgDiJ 点击链接，再选择浏览器打开；或复制这条信息￥7lbo05sHroN￥后打开手淘”
+
+                系统自动回复“您要找的【我剁手都要买的宝贝（专用于东风标致4008钥匙包扣 雪铁龙钥匙包c4l c6钥匙包壳套标致），快来和我一起瓜分红包】在这里~, 点击链接下单哦~  http://0x7.me/3QXM”
+
+                自从隔壁老王关注了游米宝盒，现在做淘客腰不疼，腿不酸了，还能每天去星巴克买两杯咖啡，喝一杯，扔一杯了！'
+            );
+            return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+        }
+
         $taobao_code = '';
         preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
         if(empty($code_match)) {
