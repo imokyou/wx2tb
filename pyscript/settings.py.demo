@@ -1,0 +1,44 @@
+# coding=utf8
+import logging
+
+logging.basicConfig(level=logging.INFO, format='%(asctime)s %(name)s:%(levelname)s %(message)s')
+
+# 协程池大小
+WORKER_THREAD_NUM = 100
+
+# 数据库设计
+DATABASE = {
+    'host': '127.0.0.1',
+    'user': 'root',
+    'passwd': '',
+    'port': 3306,
+    'db_name': 'test'
+}
+
+WX = {
+    'token_api': 'xxx',
+    'msg_api': 'xxx',
+    'media_api': 'xxx'
+}
+
+
+TKL = {
+    'accounts': [
+        {'u': 'imokyou', 'p': ''},
+        {'u': '18664783659', 'p': ''}
+    ],
+    'api': 'http://www.taokouling.com/index.php?m=api&a=taokoulingjm',
+    'domains': ['http://tb.js101.local']
+}
+SHORT_URL = {
+    'key': '',
+    'secret': '',
+    'api': [
+        'https://0x3.me/apis/authorize/getCode',
+        'https://0x3.me/apis/authorize/getAccessToken'
+    ],
+    'service_api': {
+        'add': 'https://0x3.me/apis/urls/add',
+        'modify': 'https://0x3.me/apis/url/modify'
+    }
+}
