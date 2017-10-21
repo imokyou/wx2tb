@@ -103,7 +103,8 @@ def upload_img_to_wx(img_url):
         return media[0]['media_id']
 
     file_suffix = os.path.splitext(img_url)[1]
-    filename = '../runtime/temp/'+md5(img_url) + file_suffix
+    pwd = os.path.dirname(os.path.realpath(__file__))
+    filename = pwd + '/../runtime/temp/'+md5(img_url) + file_suffix
     if not os.path.isfile(filename):
         resp = requests.get(img_url)
         with open(filename, 'wb') as f:
