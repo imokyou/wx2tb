@@ -6,7 +6,8 @@ import hashlib
 from time import sleep, time
 from settings import *
 
-_filename = 'res/short_url_access_token.txt'
+pwd = os.getcwd()
+_filename = pwd + 'res/short_url_access_token.txt'
 
 
 def md5(s):

@@ -5,7 +5,8 @@ import json
 from time import sleep, time
 from settings import *
 
-_filename = '../application/extra/wx_access_token.txt'
+pwd = os.getcwd()
+_filename = pwd + '../application/extra/wx_access_token.txt'
 
 
 def get_token():
