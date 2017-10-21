@@ -196,7 +196,7 @@ def send_msg(task):
     send_custom_text(task['account'].encode('utf8'), text)
     send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
 
-    # _mgr.finish_task([task['id']])
+    _mgr.finish_task([task['id']])
 
 
 def should_send():
@@ -211,7 +211,7 @@ def main():
             pools.map(send_msg, tasks)
         else:
             logging.info('没有需要执行的任务')
-            sleep(30)
+        sleep(30)
 
 
 if __name__ == '__main__':

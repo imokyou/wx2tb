@@ -19,7 +19,7 @@ def get_token():
     with open(_filename, 'rb') as f:
         try:
             data = json.loads(f.read())
-            if data['expires_time'] - int(time()) - 1000 < 0:
+            if data and data['expires_time'] - int(time()) - 1000 < 0:
                 is_expired = True
         except:
             data = {}
