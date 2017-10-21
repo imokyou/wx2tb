@@ -96,8 +96,8 @@ def get_short_url(task, lurl):
 
 
 def upload_img_to_wx(img_url):
-    if 'http' not in img_url:
-        img_url = 'http' + img_url
+    if 'http:' not in img_url:
+        img_url = 'http:' + img_url
     img_url_md5 = md5(img_url)
     media = _mgr.get_material_img({'url_md5': img_url_md5})
     print media
@@ -187,19 +187,28 @@ def send_custom_img(touser, img):
 def send_msg(task):
     _mgr.finish_task([task['id']])
 
-    decrynt_data = decrynt_code(task)
-    if not decrynt_data:
+    try:
+        decrynt_data = decrynt_code(task)
+        if not decrynt_data:
+            return None
+    except:
         return None
 
-    short_data = get_short_url(task, decrynt_data['local_url'])
-    data = dict(decrynt_data.items() + short_data.items())
-    _mgr.material_update(task['material_id'], data)
+    try:
+        short_data = get_short_url(task, decrynt_data['local_url'])
+        data = dict(decrynt_data.items() + short_data.items())
+        _mgr.material_update(task['material_id'], data)
+    except:
+        return None
 
     tcode = json.loads(data['ext'])
     text = '您要找的【 '+data['content'].encode('utf8')+' 】在这里~, 点击链接购买 '+data['short_url'].encode('utf8')
 
-    send_custom_text(task['account'].encode('utf8'), text)
-    send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
+    try:
+        send_custom_text(task['account'].encode('utf8'), text)
+        send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
+    except:
+        pass
 
 
 def should_send():
