@@ -96,6 +96,8 @@ def get_short_url(task, lurl):
 
 
 def upload_img_to_wx(img_url):
+    if 'http' not in img_url:
+        img_url = 'http' + img_url
     img_url_md5 = md5(img_url)
     media = _mgr.get_material_img({'url_md5': img_url_md5})
     print media
@@ -183,6 +185,8 @@ def send_custom_img(touser, img):
 
 
 def send_msg(task):
+    _mgr.finish_task([task['id']])
+
     decrynt_data = decrynt_code(task)
     if not decrynt_data:
         return None
@@ -196,8 +200,6 @@ def send_msg(task):
 
     send_custom_text(task['account'].encode('utf8'), text)
     send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
-
-    _mgr.finish_task([task['id']])
 
 
 def should_send():
