@@ -39,6 +39,7 @@ def decrynt_code(task):
 
     material = _mgr.get_material_by_id(int(task['material_id']))
     if material['origin_url'] and material['content']:
+        ret['title'] = material['title']
         ret['mid'] = material['mid']
         ret['origin_url'] = material['origin_url']
         ret['origin_url_md5'] = material['origin_url_md5']
@@ -60,6 +61,7 @@ def decrynt_code(task):
     resp = requests.post(api, params)
     if resp and resp.status_code == 200:
         content = resp.json()
+        ret['title'] = material['title']
         ret['mid'] = content['taopwdOwnerId']
         ret['origin_url'] = content['url']
         ret['origin_url_md5'] = md5(content['url'])
@@ -202,7 +204,7 @@ def send_msg(task):
         return None
 
     tcode = json.loads(data['ext'])
-    text = '您要找的【 '+data['content'].encode('utf8')+' 】在这里~, 点击链接购买 '+data['short_url'].encode('utf8')
+    text = data['title'].encode('utf8') + '\n ' + data['short_url'].encode('utf8')
 
     try:
         send_custom_text(task['account'].encode('utf8'), text)
