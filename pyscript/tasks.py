@@ -204,7 +204,7 @@ def send_msg(task):
         return None
 
     tcode = json.loads(data['ext'])
-    text = data['title'].encode('utf8') + '\n ' + data['short_url'].encode('utf8')
+    text = data['title'].encode('utf8') + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
 
     try:
         send_custom_text(task['account'].encode('utf8'), text)
