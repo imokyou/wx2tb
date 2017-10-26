@@ -62,7 +62,11 @@ class Msg extends Controller
             if(ctype_alnum($origin_data['Content'])) {
                 $taobao_code = '￥'.$origin_data['Content'].'￥';
             } else {
-                return 'success';
+                preg_match_all('/[0-9A-Za-z]{11}/i', $origin_data['Content'], $code_match);
+                if(empty($code_match[0])) {
+                    return 'success';
+                }
+                $taobao_code = '￥'.end($code_match[0]).'￥';
             }
         } else {
             $taobao_code = $code_match[0];
