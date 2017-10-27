@@ -206,7 +206,7 @@ def send_msg(task):
 
     tcode = json.loads(data['ext'])
     if len(data['title'].encode('utf8')) <= 17:
-        text = '【'+data['content'].encode('utf8') + '】\n复制这条信息'.data['code'].encode('utf8').'后打开👉手淘👈\n 或点击淘宝购买链接: ' + data['short_url'].encode('utf8')
+        text = '【'+data['content'].encode('utf8') + '】\n复制这条信息'.data['code'].encode('utf8')+'后打开👉手淘👈\n 或点击淘宝购买链接: ' + data['short_url'].encode('utf8')
     else:
         text = data['title'].encode('utf8') + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
 
