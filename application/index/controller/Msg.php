@@ -157,7 +157,7 @@ class Msg extends Controller
     private function _create_url_task($url, $origin_content, $fromuser='')
     {
         $url_md5 = md5($url);
-        $material = Material::get(['url_md5' => $url_md5]);
+        $material = Material::get(['origin_url_md5' => $url_md5]);
         if(empty($info)) {
             $material = new Material;
             $material->data([
