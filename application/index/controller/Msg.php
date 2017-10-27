@@ -57,7 +57,7 @@ class Msg extends Controller
         }
 
         $code_url = ['code'=> '', 'url'=> ''];
-        $code_url = $this->detect_code_url($origin_data);
+        $code_url = $this->detect_code_url($origin_data['Content']);
         if(empty($code_url['code']) and empty($code_url['url'])) {
             return 'success';
         }
