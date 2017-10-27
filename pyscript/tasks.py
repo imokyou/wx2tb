@@ -56,7 +56,7 @@ def decrynt_code(task):
             return ret
         else:
             material['code'] = cinfo['code']
-            material['code_md5'] = md5(cinfo['code'])
+            material['code_md5'] = md5(cinfo['code'].encode('utf8'))
             udata = {
                 'code': material['code'],
                 'code_md5': material['code_md5']
