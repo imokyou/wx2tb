@@ -40,6 +40,7 @@ def decrynt_code(task):
     material = _mgr.get_material_by_id(int(task['material_id']))
     if material['origin_url'] and material['content']:
         ret['title'] = material['title']
+        ret['code'] = material['code']
         ret['mid'] = material['mid']
         ret['origin_url'] = material['origin_url']
         ret['origin_url_md5'] = material['origin_url_md5']
@@ -62,6 +63,7 @@ def decrynt_code(task):
     if resp and resp.status_code == 200:
         content = resp.json()
         ret['title'] = material['title']
+        ret['code'] = material['code']
         ret['mid'] = content['taopwdOwnerId']
         ret['origin_url'] = content['url']
         ret['origin_url_md5'] = md5(content['url'])
@@ -102,7 +104,6 @@ def upload_img_to_wx(img_url):
         img_url = 'http:' + img_url
     img_url_md5 = md5(img_url)
     media = _mgr.get_material_img({'url_md5': img_url_md5})
-    print media
     if len(media):
         return media[0]['media_id']
 
@@ -204,7 +205,10 @@ def send_msg(task):
         return None
 
     tcode = json.loads(data['ext'])
-    text = data['title'].encode('utf8') + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
+    if len(data['title'].encode('utf8')) <= 17:
+        text = '【'+data['content'].encode('utf8') + '】\n复制这条信息'.data['code'].encode('utf8').'后打开👉手淘👈\n 或点击淘宝购买链接: ' + data['short_url'].encode('utf8')
+    else:
+        text = data['title'].encode('utf8') + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
 
     try:
         send_custom_text(task['account'].encode('utf8'), text)
@@ -229,6 +233,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # main()
     # send_custom_text('o6WPn0zd-NcgCXwsDu2hHDP8MMwU', text)
     # send_custom_img('o6WPn0zd-NcgCXwsDu2hHDP8MMwU', 'http://gw.alicdn.com/bao/uploaded/i3/81397564/TB2OmPgx98mpuFjSZFMXXaxpVXa_!!81397564.png')
