@@ -139,10 +139,10 @@ class Msg extends Controller
         } else {
             preg_match('/￥(.*?)￥/i', $origin_content, $code_match);
             if(empty($code_match)) {
-                if(ctype_alnum($origin_data['Content']) && mb_strlen($origin_data['Content']) <= 17 ) {
-                    $code_url['code'] = '￥'.$origin_data['Content'].'￥';
+                if(ctype_alnum($origin_content) && mb_strlen($origin_content) <= 17 ) {
+                    $code_url['code'] = '￥'.$origin_content.'￥';
                 } else {
-                    preg_match_all('/[0-9A-Za-z]{11}/i', $origin_data['Content'], $code_match);
+                    preg_match_all('/[0-9A-Za-z]{11}/i', $origin_content, $code_match);
                     if(!empty($code_match[0])) {
                         $code_url['code'] = '￥'.end($code_match[0]).'￥';
                     }
