@@ -233,6 +233,6 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
+    main()
     # send_custom_text('o6WPn0zd-NcgCXwsDu2hHDP8MMwU', text)
     # send_custom_img('o6WPn0zd-NcgCXwsDu2hHDP8MMwU', 'http://gw.alicdn.com/bao/uploaded/i3/81397564/TB2OmPgx98mpuFjSZFMXXaxpVXa_!!81397564.png')
