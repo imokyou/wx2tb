@@ -13,6 +13,7 @@ from settings import *
 from models import *
 import shtoken
 import wxtoken
+import tpwd
 
 
 _db_url = 'mysql+mysqldb://%s:%s@%s/%s?charset=utf8mb4' % \
@@ -48,6 +49,19 @@ def decrynt_code(task):
         ret['local_url'] = material['local_url']
         ret['ext'] = material['ext']
         return ret
+
+    if material['origin_url'] and not material['code']:
+        cinfo = tpwd.get_tpwd(material['origin_url'])
+        if not cinfo:
+            return ret
+        else:
+            material['code'] = cinfo['code']
+            material['code_md5'] = md5(cinfo['code'])
+            udata = {
+                'code': material['code'],
+                'code_md5': material['code_md5']
+            }
+            _mgr.material_update(task['material_id'], udata)
 
     index = randint(0, len(TKL['accounts'])-1)
     account = TKL['accounts'][index]
@@ -205,10 +219,11 @@ def send_msg(task):
         return None
 
     tcode = json.loads(data['ext'])
-    if len(data['title'].encode('utf8')) <= 17:
+    title = data['title'].encode('utf8')
+    if len(title) <= 17 or 'taobao.com/' in title or 'tmall.com/' in title:
         text = '【'+data['content'].encode('utf8') + '】\n复制这条信息'+data['code'].encode('utf8')+'后打开👉手淘👈\n 或点击淘宝购买链接: ' + data['short_url'].encode('utf8')
     else:
-        text = data['title'].encode('utf8') + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
+        text = title + '\n 淘宝购买链接: ' + data['short_url'].encode('utf8')
 
     try:
         send_custom_text(task['account'].encode('utf8'), text)

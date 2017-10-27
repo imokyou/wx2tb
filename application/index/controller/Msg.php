@@ -56,20 +56,10 @@ class Msg extends Controller
             return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
         }
 
-        $taobao_code = '';
-        preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
-        if(empty($code_match)) {
-            if(ctype_alnum($origin_data['Content'])) {
-                $taobao_code = '￥'.$origin_data['Content'].'￥';
-            } else {
-                preg_match_all('/[0-9A-Za-z]{11}/i', $origin_data['Content'], $code_match);
-                if(empty($code_match[0])) {
-                    return 'success';
-                }
-                $taobao_code = '￥'.end($code_match[0]).'￥';
-            }
-        } else {
-            $taobao_code = $code_match[0];
+        $code_url = ['code'=> '', 'url'=> ''];
+        $code_url = $this->detect_code_url($origin_data);
+        if(empty($code_url['code']) and empty($code_url['url'])) {
+            return 'success';
         }
 
         $resp_data = array(
@@ -86,68 +76,32 @@ class Msg extends Controller
             $resp_data['Content'] = '您已达到每日转换上限'.$conv_limit.'条独立淘口令,请明天再来!';
             return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
         }
+        if($conv_time) {
+            $conv_time->times += 1;
+            $conv_time->save();
+        } else {
+            $conv = new ConvertTimes;
+            $conv->data([
+                'account' => $origin_data['FromUserName'],
+                'date' => date('Y-m-d'),
+                'times' => 1
+            ]);
+            $conv->save();
+        }
+        
 
-        $conv = new ConvertTimes;
-        $conv->data([
-            'account' => $origin_data['FromUserName'],
-            'date' => date('Y-m-d'),
-            'times' => 1
-        ]);
-        $conv->save();
-
-        $this->_create_task($taobao_code, $origin_data['Content'], $origin_data['FromUserName']);
+        if(!empty($code_url['code'])) {
+            $this->_create_code_task($code_url['code'], $origin_data['Content'], $origin_data['FromUserName']);
+        } elseif(!empty($code_url['url'])) {
+            $this->_create_url_task($code_url['url'], $origin_data['Content'], $origin_data['FromUserName']);
+        }
+        
 
         $resp_data['Content'] = '请稍后,正在为您查询...';
         return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
-
-
-        /*
-        $wxmsg_config = Config::get('wxmsg');
-        $wxmsg = new \WxMsg\WXBizMsgCrypt($wxmsg_config['token'], $wxmsg_config['aes_key'], $wxmsg_config['appid']);
-        $format = "<xml><ToUserName><![CDATA[toUser]]></ToUserName><Encrypt><![CDATA[%s]]></Encrypt></xml>";
-        $from_xml = sprintf($format, $encrypt_data['Encrypt']);
-        $decrypt_xml = '';
-        $errcode = $wxmsg->decryptMsg($msg_sign, $timestamp, $nonce, $from_xml, $decrypt_xml);
-        if ($errcode == 0) {
-            $origin_data = xml_to_data($decrypt_xml);
-        } else {
-            $origin_data = [];
-            return 'success';
-        }
-
-        $taobao_code = '';
-        preg_match('/￥(.*?)￥/i',$origin_data['Content'],$code_match);
-        if(empty($code_match)) {
-            if(ctype_alnum($origin_data['Content'])) {
-                $taobao_code = '￥'.$origin_data['Content'].'￥';
-            } else {
-                return 'success';
-            }
-        } else {
-            $taobao_code = $code_match[0];
-        }
-
-        $data = array(
-            'ToUserName' => $origin_data['FromUserName'],
-            'FromUserName' => $origin_data['ToUserName'],
-            'CreateTime' => time(),
-            'MsgType' => 'text',
-            'Content' => ''
-        );
-
-        $ret = $this->_convert_code($taobao_code, $origin_data['FromUserName']);
-        if (empty($ret)) {
-            return 'success';
-        } elseif ($ret['c'] != 0) {
-            $data['Content'] = $ret['m'];
-        } else {
-            $data['Content'] = '您要找的【'.$ret['content'].'】在这里~, 点击链接下单哦~  '.$ret['url'];
-            // $data['Content'] = $origin_data['Content'].'  '.$ret['url'];    
-        }
-        */
     }
 
-    private function _create_task($code, $origin_content, $fromuser='')
+    private function _create_code_task($code, $origin_content, $fromuser='')
     {
         $code_md5 = md5(urlencode($code));
         $material = Material::get(['code_md5' => $code_md5]);
@@ -177,110 +131,56 @@ class Msg extends Controller
         $user_task->save();
     }
 
-
-    /*
-    private function _convert_code($m, $fromuser='')
+    private function detect_code_url($origin_content)
     {
-        $ret = array();
-
-        $code_md5 = md5(urlencode($m));
-        $info = Db::table('material')->where('code_md5', $code_md5)->select();
-        if (!empty($info)) {
-            $ret = array(
-                'c' => 0,
-                'm' => '',
-                'content' => $info[0]['content'],
-                'url' => $info[0]['short_url'],
-                'lurl' => $info[0]['origin_url'],
-                'code' => $info[0]['code']
-            );
+        $code_url = ['code'=> '', 'url'=> ''];
+        if(stripos($origin_content, 'taobao.com/') || stripos($origin_content, 'tmall.com/')){
+            $code_url['url'] = $origin_content;
         } else {
-            # 检查是达到每日转换限量
-            $conv_time = ConvertTimes::get(['account' => $fromuser, 'date' => date('Y-m-d')]);
-            $conv_limit = 10;
-            if ($conv_time) {
-                if ($conv_time->times >= $conv_limit) {
-                    $ret = array('c' => -1, 'm' => '您已达到每日转换上限'.$conv_limit.'条独立淘口令,请明天再来!');
-                    return $ret;
+            preg_match('/￥(.*?)￥/i', $origin_content, $code_match);
+            if(empty($code_match)) {
+                if(ctype_alnum($origin_data['Content']) && mb_strlen($origin_data['Content']) <= 17 ) {
+                    $code_url['code'] = '￥'.$origin_data['Content'].'￥';
+                } else {
+                    preg_match_all('/[0-9A-Za-z]{11}/i', $origin_data['Content'], $code_match);
+                    if(!empty($code_match[0])) {
+                        $code_url['code'] = '￥'.end($code_match[0]).'￥';
+                    }
                 }
-                $conv_time->times += 1;
-                $conv_time->save();
             } else {
-                $conv = new ConvertTimes;
-                $conv->data([
-                    'account' => $fromuser,
-                    'date' => date('Y-m-d'),
-                    'times' => 1
-                ]);
-                $conv->save();
-            }
-            $config = Config::get('taokouling');
-            $account = $config['accounts'][array_rand($config['accounts'])];
-            $data = "username={$account['u']}&password={$account['p']}&text=".urlencode($m);
-            Log::record($data);
-            $resp = curl_post($config['api'], $data);
-            if ($resp) {
-                $resp = json_decode($resp, true);
-
-                $material = new Material;
-                $material->data([
-                    'title' => $m,
-                    'content' => $resp['content'],
-                    'code' => $m,
-                    'code_md5' => md5(urlencode($m)),
-                    'mid' => '100000',
-                    'origin_url' => $resp['url'],
-                    'origin_url_md5' => md5(urlencode($resp['url'])),
-                    'local_url' => '',
-                    'short_url' => '',
-                    'account' => $fromuser,
-                    'ext' => json_encode($resp)
-                ]);
-                $material->save();
-
-                $local_domain = $config['domains'][array_rand($config['domains'])];
-                $local_url = $local_domain.'/go/?itemid='.$material->id; 
-
-                $ret['code'] = $m;
-                $ret['c'] = 0;
-                $ret['m'] = '';
-                $ret['content'] = $resp['content'];
-                $ret['lurl'] = $resp['url'];
-                $ret['url'] = $this->_lurl_to_surl($local_url);
-
-                $material->local_url = $local_url;
-                $material->short_url = $ret['url'];
-                $material->title = $ret['content'];
-                $material->save();
-            } else {
-                $ret = array('c' => -1, 'm' => '淘口令解密失败,请重试');
-                    return $ret;
-            }
+                $code_url['code'] = $code_match[0];
+            }    
         }
-        return $ret;
+        return $code_url;        
     }
-    */
 
-    private function _lurl_to_surl($lurl)
+    private function _create_url_task($url, $origin_content, $fromuser='')
     {
-        $config = Config::get('shorturl');
-        $access_token_file = './../application/extra/access_token.txt';
-
-        $config = new \ShortURL\Config($config['key'], $config['secret']);
-        $api = new \ShortURL\API($config);
-        if(file_exists($access_token_file)){
-            $api->setAccessToken(file_get_contents($access_token_file));
-        }else{
-            $token = $api->requestAccessToken();
-            file_put_contents($access_token_file, $token);
+        $url_md5 = md5($url);
+        $material = Material::get(['url_md5' => $url_md5]);
+        if(empty($info)) {
+            $material = new Material;
+            $material->data([
+                'title' => $origin_content,
+                'content' => '',
+                'code' => '',
+                'code_md5' => '',
+                'mid' => '100000',
+                'origin_url' => $url,
+                'origin_url_md5' => $url_md5,
+                'local_url' => '',
+                'short_url' => '',
+                'account' => $fromuser,
+                'ext' => ''
+            ]);
+            $material->save();
         }
-
-        $params= new \ShortURL\Model\addModel();
-        $params->setLongurl($lurl);
-        $api_result = $api->add($params);
-        if ($api_result && $api_result['status'] == 1) {
-            return $api_result['data']['short_url'];
-        }
-        return '';
+        $user_task = new UserTask;
+        $user_task->data([
+            'material_id' => $material->id,
+            'account' => $fromuser,
+            'is_sended' => 0
+        ]);
+        $user_task->save();
     }
 }
