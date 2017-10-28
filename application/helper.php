@@ -27,6 +27,7 @@ function curl_get($url, $timeout=60, $agent='', $cookie='')
     curl_setopt($fn, CURLOPT_URL, $url);
     curl_setopt($fn, CURLOPT_TIMEOUT, 60);
     curl_setopt($fn, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($fn, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($fn, CURLOPT_REFERER, $url);
     curl_setopt($fn, CURLOPT_HEADER, 0);
     if ($agent) {
@@ -95,4 +96,15 @@ function xml_to_data($xml){
     $json = json_encode($obj);
     $data  = json_decode($json, true);
     return $data;
+}
+
+function url_valid($url) {
+    $flag = false;
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_NOBODY, true);
+    $result = curl_exec($curl);
+    if ($result) {
+        $flag = true;
+    }
+    return $flag;
 }

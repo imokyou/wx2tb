@@ -1,0 +1,368 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>游米宝盒 - 官方网站</title>
+    <meta name="keywords" content="游米宝盒 - 官方网站">
+    <meta name="description" content="游米宝盒让你打破微信与淘宝天猫间屏障，无需复制商品链接，在任一微信环境中获取淘宝天猫店铺、单品爆款、优惠券链接、专题活动等！">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1246">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <!--判断pc 移动端-->
+    <script type="text/javascript">
+        (function () {
+            console.log("wwww");
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+//                window.location.href = "taokoulin.html";
+            }
+            else if (ua.indexOf("iphone") > 0 || ua.indexOf("android") > 0) {
+                window.location.href = "web.html";
+            }
+        }());
+    </script>
+    <link href="/static/css/kb.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/base.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/index.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/css/layer.css" rel="stylesheet" type="text/css"/>
+    <!--<script src="/static/js/testbrowser.min.js" type="text/javascript"></script>-->
+    <script src="/static/js/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/js/jquery.cookie.js" type="text/javascript"></script>
+    <!--<script src="/static/js/layer.js" type="text/javascript"></script>-->
+    <script src="/static/js/jquery.qrcode.min.js" type="text/javascript"></script>
+
+    <style>
+        .tel-kf-share-top {
+            background-color: #ffffff;
+            border: 1px solid #d1d2d6;
+            text-align: center;
+        }
+
+        .tel-kf-share-top .erweima {
+            width: 150px;
+            height: 150px;
+
+        }
+
+        .tel-kf-share-top div {
+            font-size: 16px;
+            color: #65728c;
+        }
+
+        .liucheng {
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 640px;
+            margin: auto;
+
+        }
+        .mask{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.3);
+        }
+        .layui-layer-shade{
+            display: none;
+        }
+        .center_tishi{
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.4);
+            color: white;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: 999;
+        }
+    </style>
+    <style>
+        form.login { padding: 20px; }
+        .forminput { border: 1px solid #ddd; border-radius: 5px; overflow: hidden; }
+        .Controls { position: relative; border-bottom: 1px solid #ccc; }
+        .Controls .iconphone { display: block; width: 20px; height: 20px; position: absolute; left: 15px; top: 15px; z-index: 10; }
+        .forminput input:-webkit-autofill { background: #fff; }
+        .forminput input[type=text], .forminput input[type=password] { background-color: #fff; color: #8a8a8a; width: 100%; height: 49px; line-height: 49px; text-indent: 50px; box-shadow: inset 30px 30px 0 20px #fff; margin: 0; padding: 0; border: 0; }
+        .forminput .wbordernone { border-bottom: none; position: relative; }
+        .Btn-a { display: block; color: #FFF; width: 180px; font-size: 14px; line-height: 51px; text-align: center; background-color: #4172c2; border: 0; border-radius: 4px; letter-spacing: 4px; margin-top: 0px; box-shadow: 0 1px 0 #ccc; }
+        .login .Justify button { cursor: pointer; width: 100%; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="content max-and-min m0a table">
+        <div class="f12 table-cell v-middle">
+            <div class="table h42">
+                <a href="#" class="table-cell v-middle f0lh1"><img class="" src="/static/images/youmi_logo.png" height="42"></a>
+            </div>
+        </div>
+        <div class="f12 table-cell v-middle tr">
+            <!--
+            <a class="btn login inline-block" target="dialog" data-options="{area:['350px'],title:'账号登录'}">登录</a>
+            <a class="btn signup inline-block" href="zhuce.html" target="_blank">注册</a>
+        -->
+        </div>
+
+        <!--登录之后-->
+        <div class="f12 table-cell v-middle tr" style="display: none">
+            <span class="mr15">浏览量（PV）：<span class="cl-o">400</span></span>
+            <div class="user-name pr15">
+                用户：<span>13560128274</span>
+            </div>
+            <div class="expire-time pl15 pr15">有效期：<span class="cl-r">2018-09-16（个人版）</span></div>
+            <a class="renew pl10 pr15 cl-o pointer fb unl" href="">开通续费</a>
+            <a class="logout pl15 pointer cl-b unl" href="/Admin/Index/logout.html">退出</a>
+        </div>
+    </div>
+
+</div>
+<div class="banner"></div>
+<div class="w" style="background:#f8f8f8">
+    <div class="max-and-min m0a">
+        <div class="pl100 pr100 pb50 tc">
+            <div class="convert-url table w mb20">
+                <div class="table-cell pr10 f0lh1">
+                    <div class="table w f18">
+                        <div class="table-cell tl">
+                            <input class="url-input w pl20 js-shopurl" placeholder="输入淘宝/天猫店铺首页或商品详情页链接" id="origin-url" type="text"
+                                   value="">
+                        </div>
+                        <div class="table-cell btn-transform w130 pointer js-transform tc">转换网址</div>
+                    </div>
+                </div>
+            </div>
+            <div class="tl pt40 f16 pr" style="color:#65728c">
+                <p class="mb15 f34 tc pt10 pb30">— 使用说明 —</p>
+                <p class="mb15">
+                    <span class="title-num">1</span> 输入你的淘宝店首页网址，转换后即可获得分享链接和二维码，轻轻松松在微信中分享你的小店；</p>
+                <p class="mb15">
+                    <span class="title-num">2</span> 支持转换页面：首页、商品详情页、优惠券领取页、H5自定义页面；转换后可在微信传播查看；</p>
+                <p class="mb15">
+                    <span class="title-num">3</span> 建议商家开通微信公众号，并添加生成链接到公众号菜单中，便于公众号推广宣传引流；</p>
+                <p class="mb30">
+                    <span class="title-num">4</span> 点击管理店铺二维码，设置公众号绑定，便于微信中进行公众号吸粉关注；</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="w pt50 pb50">
+    <div class="max-and-min m0a" style="color:#65728c">
+        <p class="f34 pb50 tc ">— 产品介绍 —</p>
+    </div>
+    <img src="/static/images/liucheng.png" alt="" class="liucheng">
+</div>
+<div class="footer tc h60 f14">
+    <p class="pt20">© 2015-2017 结儿科技旗下品牌 版权所有</p>
+</div>
+
+<div class="tel-kf-share-top">
+    <img src="/static/images/erweima.jpg" alt="" class="erweima">
+    <div>关注微信公众号</div>
+</div>
+<div id="hdAdImg" style="display: none;">
+    <a href="h"
+       target="_blank">
+        <img class="hdAdBg" src="/static/images/hdbj.png">
+    </a>
+    <img class="hdAdClose" src="/static/images/hdbj_close.png" onclick="$('#hdAdImg').hide()">
+</div>
+
+<!--遮罩-->
+<div class="mask"></div>
+<!--登录-->
+<div class="layui-layer layui-layer-page layer-anim" id="layui-layer2" type="page" times="2" showtime="0" contype="string" style="display: none;z-index: 999; width: 350px; top: 308px; left: 50%;margin-left: -175px;"><div class="layui-layer-title" style="cursor: move;">账号登录</div><div id="" class="layui-layer-content" style="height: 241px;">
+    <form action="" class="form-ajax login" method="post">
+        <div class="forminput">
+            <div class="Controls">
+                <svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <title>id</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs>
+                    </defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="2-copy-2" sketch:type="MSArtboardGroup" transform="translate(-505.000000, -357.000000)" fill="#666">
+                            <path d="M517.388314,366.868305 C519.068314,366.001784 520.220053,364.252653 520.220053,362.231784 C520.220053,359.350479 517.883966,357.014392 515.002662,357.014392 C512.121357,357.014392 509.78527,359.350479 509.78527,362.231784 C509.78527,364.252653 510.936575,366.001784 512.616575,366.868305 C508.246575,367.938305 505.002662,371.879175 505.002662,376.57961 C505.002662,376.81961 505.197009,377.014392 505.437444,377.014392 C505.677444,377.014392 505.872227,376.81961 505.872227,376.57961 C505.872227,371.537001 509.960053,367.449175 515.002662,367.449175 C520.04527,367.449175 524.133096,371.537001 524.133096,376.57961 C524.133096,376.81961 524.327444,377.014392 524.567879,377.014392 C524.807879,377.014392 525.002662,376.81961 525.002662,376.57961 C525.002662,371.879175 521.758749,367.938305 517.388314,366.868305 L517.388314,366.868305 Z M510.654835,362.231784 C510.654835,359.830479 512.601357,357.883957 515.002662,357.883957 C517.403966,357.883957 519.350488,359.830479 519.350488,362.231784 C519.350488,364.632653 517.403966,366.57961 515.002662,366.57961 C512.601357,366.57961 510.654835,364.632653 510.654835,362.231784 L510.654835,362.231784 Z" id="id" sketch:type="MSShapeGroup">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+                <input type="text" name="username" value="" id="" placeholder="请填写您注册的账号"><i class="Ico"></i>
+            </div>
+            <div class="Controls">
+                <svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <title>pw</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs>
+                    </defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="2-copy-2" sketch:type="MSArtboardGroup" transform="translate(-505.000000, -407.000000)" fill="#666">
+                            <path d="M515,418.304324 C514.12782,418.304324 513.421091,418.888119 513.421091,419.608723 C513.421091,419.995004 513.624357,420.341947 513.947394,420.580774 L513.947394,421.782554 C513.947394,422.262857 514.418637,422.652187 515.00003,422.652187 C515.581302,422.652187 516.052667,422.262857 516.052667,421.782554 L516.052667,420.580774 C516.375703,420.341947 516.579,419.995004 516.579,419.608723 C516.57897,418.888119 515.87221,418.304324 515,418.304324 L515,418.304324 L515,418.304324 Z M522.368454,414.391327 L521.315788,414.391327 L521.315788,412.217421 C521.315788,409.335657 518.488418,407 515,407 C511.511582,407 508.684212,409.335657 508.684212,412.217421 L508.684212,414.391327 L507.631576,414.391327 C506.178003,414.391327 505,415.364503 505,416.565234 L505,424.826193 C505,426.026824 506.178003,427 507.631576,427 L522.368424,427 C523.821422,427 525,426.026899 525,424.826193 L525,416.565234 C525.00003,415.364478 523.821422,414.391327 522.368454,414.391327 L522.368454,414.391327 L522.368454,414.391327 Z M515,407.869583 C517.906571,407.869583 520.263152,409.816309 520.263152,412.217396 L520.263152,414.391302 L509.737544,414.391302 L509.737544,412.217396 L509.736848,412.217396 C509.736848,409.816309 512.093459,407.869583 515,407.869583 L515,407.869583 L515,407.869583 Z M523.947364,424.826093 C523.947364,425.546622 523.240604,426.130392 522.368454,426.130392 L507.631606,426.130392 C506.759396,426.130392 506.052667,425.546622 506.052667,424.826093 L506.052667,416.565234 C506.052667,415.84468 506.759426,415.260835 507.631606,415.260835 L522.368454,415.260835 C523.240635,415.260835 523.947364,415.844705 523.947364,416.565234 L523.947364,424.826093 L523.947364,424.826093 L523.947364,424.826093 Z" id="pw" sketch:type="MSShapeGroup">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+                <input type="password" name="password" id="" value="" placeholder="输入您的密码">
+            </div>
+            <div class="Controls wbordernone" id="captchas_div" style="display: none">
+                <svg class="iconphone" width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                    <title>code</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs>
+                    </defs>
+                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                        <g id="2-copy-2" sketch:type="MSArtboardGroup" transform="translate(-505.000000, -457.000000)" fill="#666">
+                            <path d="M514.992364,462.720402 C514.752337,462.720402 514.558125,462.879933 514.558125,463.077076 L514.558125,468.784241 C514.558125,468.981384 514.752337,469.140915 514.992364,469.140915 C515.232364,469.140915 515.426576,468.981384 515.426576,468.784241 L515.426576,463.077076 C515.426576,462.879933 515.232364,462.720402 514.992364,462.720402 L514.992364,462.720402 Z M524.979837,460.500513 C524.421168,460.552589 523.839891,460.580179 523.242853,460.580179 C519.219511,460.580179 515.906875,459.331741 515.474864,457.726607 L515.426603,457.726607 L515.426603,457.369955 C515.426603,457.173147 515.232391,457.013259 514.992391,457.013259 C514.752364,457.013259 514.558152,457.17317 514.558152,457.369955 L514.558152,457.726629 L514.509891,457.726629 C514.077853,459.331763 510.76519,460.580201 506.741821,460.580201 C506.14481,460.580201 505.563533,460.552589 505.004891,460.500536 L505.004891,461.214799 C505.015217,461.215737 505.025462,461.216808 505.035815,461.217746 C505.015408,461.592723 505.004891,461.974732 505.004891,462.363705 C505.004891,470.440558 509.476196,476.988237 514.992391,476.988237 C520.50856,476.988237 524.979864,470.440558 524.979864,462.363705 C524.979864,461.974732 524.969321,461.592723 524.948913,461.217746 C524.959266,461.216808 524.969511,461.215759 524.979864,461.214799 L524.979864,460.500513 L524.979837,460.500513 Z M514.992364,476.274866 C509.956196,476.274866 505.873315,470.046652 505.873315,462.363705 C505.873315,461.994085 505.882962,461.631317 505.901576,461.27529 C506.178125,461.287299 506.458315,461.293638 506.741793,461.293638 C510.588886,461.293638 513.851549,460.163281 514.992364,458.597634 C516.133152,460.163281 519.395842,461.293638 523.242853,461.293638 C523.526386,461.293638 523.806576,461.287299 524.083125,461.27529 C524.101739,461.631317 524.111386,461.994107 524.111386,462.363705 C524.111386,470.046629 520.028533,476.274866 514.992364,476.274866 L514.992364,476.274866 Z M514.992364,469.85433 C514.752337,469.85433 514.558125,470.014196 514.558125,470.211004 L514.558125,470.924375 C514.558125,471.121518 514.752337,471.281094 514.992364,471.281094 C515.232364,471.281094 515.426576,471.121518 515.426576,470.924375 L515.426576,470.211004 C515.426576,470.014196 515.232364,469.85433 514.992364,469.85433 L514.992364,469.85433 Z" id="code" sketch:type="MSShapeGroup">
+                            </path>
+                        </g>
+                    </g>
+                </svg>
+                <input name="captchas" type="text" class="Inp-v" placeholder="输入验证码"><i class="Ico"></i>
+                <label class="tip-txt" for="yzm">
+                </label>
+                <div class="" style="position: absolute; right: 8px; top: 8px; display: none" id="number_div">
+                </div>
+            </div>
+        </div>
+        <div class="Controls Justify" style="border: 0; overflow: hidden">
+            <button type="submit" class="Btn-a">
+                登录
+            </button>
+        </div>
+        <div class="Controls Bside" style=" border: 0; text-align:right; margin-top:5px;">
+            <a target="_blank" href="">忘记密码？</a>
+        </div>
+    </form></div><span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close1" href="javascript:;"></a></span><span class="layui-layer-resize"></span></div>
+<!--失败-->
+<div class="layui-layer layui-layer-page layer-anim" id="layui-layer4" type="page" times="4" showtime="0"
+     contype="string" style="display: none;z-index: 999; width: 300px; top: 288.5px; left:50%;margin-left: -150px;
+">
+    <div id="" class="layui-layer-content" style="height: 372px;">
+        <div class="tc p15"><h3 class="f16 lh150 cl-r">地址错误！请输入正确的首页、商品页、优惠券、h5活动页链接地址。</h3>
+            <p class="pt10 f14">遇到问题？扫码加客服，咨询解决！</p>
+            <div class="fwq" style="position:static;margin: 0 auto;"><img src="/static/images/kefu.jpg" width="200"
+                                                                          height="200">
+                <div class="msg cl-w" style="margin:0;"><span>请加客服了解更多产品知识和店铺推广方案。</span></div>
+            </div>
+        </div>
+    </div>
+<span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close2"
+                                    href="javascript:;"></a></span><span class="layui-layer-resize"></span>
+</div>
+
+<!--成功-->
+<div class="layui-layer layui-layer-page layer-anim tranlate none" id="layui-layer3" type="page" times="3" showtime="0"
+     contype="string" style="z-index: 999; width: 380px; top: 239.5px; left:50%;margin-left: -190px;">
+    <div id="" class="layui-layer-content" style="">
+        <div class="new-transform-code p20" style="margin: auto">
+            <p class="tc f16 mb10">恭喜您！微信推广链接已生成</p>
+            <div style="display:inline-block; text-align:left;">
+                <p class="pt10 pb10 f14">短连接：<span class="lianjie" id="short-url"></span>
+                    <span data-clipboard-action="copy" data-clipboard-target=".lianjie" class="pointer cl-w bg-b tc w80 h30 f12" style="display: inline-block; line-height:30px;border-radius:3px;" id="fuzhi">复制</span>
+
+                </p>
+            </div>
+        </div>
+    </div>
+    <span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close2"
+                                        href="javascript:;"></a></span><span class="layui-layer-resize"></span>
+</div>
+
+<iframe name="downloadframe" id="downloadframe" class="none"></iframe>
+<form target="downloadframe" action="/Admin/Index/qcodedownload.html" method="post" class="none">
+    <input name="imgdata" id="qrimgdata"/>
+</form>
+<script src="/static/js/page.js" type="text/javascript"></script>
+<script>
+    function qcodeSave() {
+        var d = $('#qcode_img canvas').get(0);
+        var imgdata = d.toDataURL('image/png');
+        $('#qrimgdata').val(imgdata);
+        $('[target=downloadframe]').submit();
+    }
+    (function () {
+
+    })();
+    function clipboardcopy() {
+        var clipboard = new Clipboard('[data-clipboard-text],[data-clipboard-target]');
+        clipboard.on('success', function (e) {
+            layer.msg('复制成功');
+
+        });
+    }
+    clipboardcopy();
+</script>
+
+<script src="/static/js/clipboard.min.js" type="text/javascript"></script>
+<script>
+    $(function () {
+        $(".layui-layer-close").click(function () {
+            $(".mask").hide();
+            $(".layui-layer").hide();
+        })
+        $(".login").click(function () {
+            $(".mask").show();
+            $("#layui-layer2").show();
+        })
+        $(".js-transform").click(function(){
+            var origin_url = $('#origin-url').val();
+            if (origin_url == '') {
+                alert('请输入需要转换的网址');
+                return false;
+            } 
+
+            $(".mask").show();
+            $.ajax({
+                url: '/tpwd',
+                type: 'POST',
+                dataType: 'JSON',
+                data: {'url': origin_url},
+                success: function(resp) {
+                    if(resp.c == 0) {
+                        $('#short-url').html(resp.d['short_url']);
+                        $("#layui-layer3").show();
+                    } else {
+                        $("#layui-layer4").show();
+                    }
+                },
+                error: function() {
+                    $("#layui-layer4").show();
+                }
+            });
+        })
+
+
+        $("#fuzhi").click(function(){
+            var clipboard = new Clipboard('#fuzhi');
+            clipboard.on('success', function (e) {
+                var ospan = $("<span></span>");
+                ospan.addClass("center_tishi");
+                ospan.text("复制成功");
+                $("body").append(ospan);
+                setTimeout(function(){
+                    ospan.remove();
+                },800);
+            });
+            clipboard.on('error', function (e) {
+                var ospan = $("<span></span>");
+                ospan.addClass("center_tishi");
+                ospan.text("复制失败，请手动复制");
+                $("body").append(ospan);
+                setTimeout(function(){
+                    ospan.remove();
+                },500);
+            });
+
+        });
+
+    })
+
+</script>
+
+</body>
+</html>

@@ -6,6 +6,10 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit0c849c2b357f1cb21ecb3cabab9e31a8
 {
+    public static $files = array (
+        'ad49febd5a737b2b2a75887dfa1d1ca4' => __DIR__ . '/..' . '/jcove/taobao-sdk/TopSdk.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         't' => 
         array (

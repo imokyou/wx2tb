@@ -94,5 +94,50 @@
             "orm",
             "thinkphp"
         ]
+    },
+    {
+        "name": "jcove/taobao-sdk",
+        "version": "v1.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/jcove/taobao-sdk.git",
+            "reference": "66c68d0442485f98a72291b2e9d5e9515c083757"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://files.phpcomposer.com/files/jcove/taobao-sdk/66c68d0442485f98a72291b2e9d5e9515c083757.zip",
+            "reference": "66c68d0442485f98a72291b2e9d5e9515c083757",
+            "shasum": ""
+        },
+        "require": {
+            "ext-curl": "*",
+            "php": ">= 5.2.0"
+        },
+        "time": "2017-10-18T06:33:23+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "TopSdk.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "jcove",
+                "email": "jcove@163.com"
+            }
+        ],
+        "description": "taobao-sdk-PHP-auto_1461588231052-20171015",
+        "keywords": [
+            "api",
+            "sdk",
+            "taobao",
+            "top"
+        ]
     }
 ]

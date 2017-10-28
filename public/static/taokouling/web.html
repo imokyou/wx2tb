@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html><head>
+    <title>游米宝盒 - 官方网站</title>
+    <meta name="keywords" content="游米宝盒 - 官方网站">
+    <meta name="description" content="游米宝盒让你打破微信与淘宝天猫间屏障，无需复制商品链接，在任一微信环境中获取淘宝天猫店铺、单品爆款、优惠券链接、专题活动等！">
+    <meta charset="UTF-8">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="telephone=no" name="format-detection">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <!--判断pc 移动端-->
+    <script type="text/javascript">
+        (function(){
+            var ua = window.navigator.userAgent.toLowerCase();
+            if (!(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))) {
+                window.location.href = "taokoulin.html";
+            }
+            else if (ua.indexOf("iphone") > 0 || ua.indexOf("android") > 0) {
+//                window.location.href = "web.html";
+            }
+        }());
+    </script>
+    <link href="css/kb.min.css?v=171019" rel="stylesheet" type="text/css">
+    <link href="css/base.css?v=171019" rel="stylesheet" type="text/css">
+    <link href="css/index.css?v=171019" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/web_tan.css">
+    <script src="js/jquery.min.js" type="text/javascript"></script>
+    <!--<script src="js/layer.js" type="text/javascript"></script>-->
+    <!--&lt;!&ndash;<link href="http://taobao.kbstore.cnjs/layer/mobile/need/layer.css?2.0" type="text/css" rel="styleSheet" id="layermcss">&ndash;&gt;-->
+    <!--<script src="js/jquery.qrcode.min.js" type="text/javascript"></script>-->
+
+
+
+    <!--<script>-->
+        <!--function tips(msg, time) {-->
+            <!--if (!msg) return;-->
+            <!--layer.open({ skin: 'msg', content: msg, time: time || 2 });-->
+        <!--};-->
+        <!--$.msg = layer.msg = tips;-->
+        <!--layer.load = function () { return layer.open({ type: 2 }); }-->
+        <!--String.prototype.substitute = function (object, regexp) {-->
+            <!--return String(this).replace(regexp || (/\\?\{([^{}]+)\}/g), function (match, name) {-->
+                <!--if (match.charAt(0) == '\\') return match.slice(1);-->
+                <!--return (object[name] != null) ? object[name] : ((name.indexOf(':') != -1) ? '{' + name + '}' : '');-->
+            <!--});-->
+        <!--};-->
+    <!--</script>-->
+    <style>
+        .liucheng{
+            display: block;
+            width: 100%;
+            height: auto;
+            max-width: 640px;
+            margin: auto;
+        }
+        #t25{
+            margin-top: -25px;
+        }
+        #fuzhi{
+            margin: 0 auto;
+        }
+        .center_tishi{
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            position: fixed;
+            bottom: 20%;
+            left: 50%;
+            -webkit-transform: translate(-50%);
+            -moz-transform: translate(-50%);
+            -ms-transform: translate(-50%);
+            -o-transform: translate(-50%);
+            transform: translate(-50%);
+            z-index: 999;
+            white-space:nowrap;
+        }
+    </style>
+</head>
+<body>
+<div class="header  pt10 pb10">
+    <img src="images/youmi_logo.png" height="42" class="logo">
+    <a id="taobao" target="_blank" class="btn login inline-block" style="float: right;width:90px;display: none" href="http://taoke.taobaowx.cn">切换至淘客版</a>
+</div>
+<div class="f0lh1">
+    <!--<img src="images/banner_sj.png" class="w">-->
+    <img src="images/youmi_web.png" alt="" class="w">
+</div>
+<div class="pr pl15 pr15 box-sizing" style="background:#f8f8f8;">
+    <input class="url-input w pl10 pr10 mb20 f16 js-shopurl" id="t25" placeholder="输入淘宝/天猫店铺首页或商品详情页链接" style="height:50px; line-height:50px;">
+    <div class="tc">
+        <div class="btn btn-manage m0a js-transform inline-block">转换网址</div>
+    </div>
+    <div class="tl pt40 f14 pr" style="color:#65728c">
+        <p class="mb15 f26 tc pb15">— 使用说明 —</p>
+        <p class="mb5">
+            <span class="title-num">1</span> 输入你的淘宝店首页网址，转换后即可获得分享链接和二维码，轻轻松松在微信中分享你的小店；</p>
+        <p class="mb5">
+            <span class="title-num">2</span> 支持转换页面：首页、商品详情页、优惠券领取页、H5自定义页面；转换后可在微信传播查看；</p>
+        <p class="mb5">
+            <span class="title-num">3</span> 建议商家开通微信公众号，并添加生成链接到公众号菜单中，便于公众号推广宣传引流；</p>
+        <p class="mb5">
+            <span class="title-num">4</span> 点击管理店铺二维码，设置公众号绑定，便于微信中进行公众号吸粉关注；</p>
+        <!--<a class="pr block f0lh1 tc pt10 pb10" href="http://wiki.kbstore.cn/index.php?s=/1&amp;page_id=3">-->
+            <!--<img src="images/help-2.png">-->
+        <!--</a>-->
+    </div>
+</div>
+<div class="w box-sizing" style="padding:30px 2.5%;">
+    <div style="color:#65728c">
+        <p class="f26 pb30 tc ">— 产品介绍 —</p>
+        <!--<div class="w table">-->
+            <!--<div class="table-cell tc">-->
+                <!--<img src="images/7.png" style="max-width:90%;">-->
+            <!--</div>-->
+            <!--<div class="table-cell tc">-->
+                <!--<img src="images/8.png" style="max-width:90%;">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="w table mt30">-->
+            <!--<div class="table-cell tc">-->
+                <!--<img src="images/9.png" style="max-width:90%;">-->
+            <!--</div>-->
+            <!--<div class="table-cell tc">-->
+                <!--<img src="images/10.png" style="max-width:90%;">-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<p class="tc mt30">-->
+            <!--<a class="btn w150 inline-block br3 f16" style="border:1px solid #ffae0b; color:#ffae0b; background:#fff0d3; display: none" target="_blank" href="http://kbstore.cn/index.php/case/taowx">查看更多</a>-->
+        <!--</p>-->
+    </div>
+    <img src="images/liucheng_web.jpg" alt="" class="liucheng">
+</div>
+<!--共用底部-->
+<div class="footer tc h50 f14 cl-w">
+    <p class="pt15 ">© 2015-2017 结儿科技旗下品牌 版权所有</p>
+</div>
+<div id="layui-m-layer1" class="layui-m-layer layui-m-layer1" index="1" style="display: none">
+    <div class="layui-m-layershade"></div>
+    <div class="layui-m-layermain">
+        <div class="layui-m-layersection">
+            <div class="layui-m-layerchild  layui-m-anim-scale">
+                <div class="layui-m-layercont">
+                    <div class="new-transform-code p10 pl25 pr25">
+                        <!--<div class="code mb10 tc">-->
+                            <!--<div class="f14 lh180 tc">微信扫一扫<br>立即打开淘宝/天猫店铺</div>-->
+                            <!--<div id="qcode_img" class="qcode-img tc"><img-->
+                                    <!--src="data:image/png;base64,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">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <div style="position: relative;" class="pb10">
+                            <!--<div class="tc">-->
+                                <!--<label style="line-height:30px;border-radius:3px;"-->
+                                       <!--class="inline-block pointer cl-w bg-b tc w80 h30 f12 js-uplogo">上传LOGO-->
+                                    <!--<input type="file" class="none">-->
+                                <!--</label>-->
+                                <!--<a style="line-height:30px;border-radius:3px; margin-left:10px;"-->
+                                   <!--class="inline-block pointer cl-w bg-b tc w80 h30 f12 js-qxlogo">取消LOGO</a>-->
+                            <!--</div>-->
+                            <p class="pt10 pb10 f14 p_lianjie">短连接：<span class="inline-block ellipsis lianjie"
+                                                               style="max-width:200px;vertical-align:middle;">http://t.cn/ROLDMui</span>
+                                <!--<span data-clipboard-text="http://t.cn/ROLDMui" class="pointer cl-w bg-b tc w80 h30 f12"-->
+                                      <!--style="display: inline-block; line-height:30px;border-radius:3px;">复制</span></p>-->
+                            </p>
+                            <div data-clipboard-action="copy" data-clipboard-target=".lianjie" class="pointer cl-w bg-b tc w80 h30 f12" style="line-height:30px;border-radius:3px;" id="fuzhi">复制</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="h50"></div>
+<div class="footer-ui">
+    <!--<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=2987382072&amp;site=qq&amp;menu=yes">-->
+        <!--<span class="qq"></span>免费咨询-->
+    <!--</a>-->
+    <!--<a href="tel:4006266287">-->
+        <!--<span class="tel"></span>免费电话-->
+    <!--</a>-->
+    <a href="zhuce.html" class="btn tc">免费注册</a>
+    <a href="denglu_web.html" class="btn tc">登录</a>    </div>
+<!--<script>-->
+    <!--(function () {-->
+        <!--$(".js-transform").on("click", function () {-->
+            <!--$('.js-shopurl').blur();-->
+            <!--var shopurl = $('.js-shopurl').val().trim();-->
+            <!--$(".error-link-tip").hasClass("none") || $(".error-link-tip").addClass("none");-->
+            <!--var reg = /(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?/;-->
+            <!--if (/￥.*￥/.test(shopurl) && !reg.test(shopurl)) {-->
+                <!--//页面层-->
+                <!--layer.open({-->
+                    <!--type: 1,-->
+                    <!--content: '<div class="tc p15"><h4 class="f16 lh150 cl-r">您填写的地址无效，请用<br/>浏览器打开淘宝复制链接进行转换！<br/><a href="https://m.taobao.com/" target="_blank">去淘宝网复制链接</a></h4></div>',-->
+                    <!--btn:'我知道了'-->
+                <!--});-->
+                <!--return;-->
+            <!--}-->
+
+            <!--var loadlayer = layer.load();-->
+            <!--$.ajax({-->
+                <!--url: "/Admin/Index/convertUrl.html",-->
+                <!--type: 'POST',-->
+                <!--data: { url: shopurl },-->
+                <!--dataType: "json",-->
+                <!--success: function (rs) {-->
+                    <!--layer.close(loadlayer);-->
+                    <!--if (rs.msg) {-->
+                        <!--layer.msg(rs.msg);-->
+                    <!--}-->
+                    <!--if (rs.status == 'no_login') {-->
+                        <!--setTimeout(function () {-->
+                            <!--window.location.href = 'http://auth.kbstore.cn/apilogin/flag/8?referer=http%3A%2F%2Ftaobao.kbstore.cn%2FAdmin%2FWap%3Fflag%3D8&code=TaoWX&data=%7B%22logo%22%3A%22http%3A%5C%2F%5C%2Ftaobao.kbstore.cn%5C%2FPublic%5C%2Fimages%5C%2Flogo-1.png%22%2C%22logo_url%22%3A%22http%3A%5C%2F%5C%2Ftaobao.kbstore.cn%5C%2FAdmin%3Fflag%3D8%22%2C%22title%22%3A%22%5Cu6dd8%5Cu8fdb%5Cu5fae%5Cu4fe1-%5Cu5546%5Cu5bb6%5Cu7248%22%2C%22bgcolor%22%3A%22%23ffae0b%22%2C%22footer%22%3A%22%5Cu00a9+2015-2017+%5Cu5e97%5Cu62c9%5Cu62c9%5Cu65d7%5Cu4e0b%5Cu54c1%5Cu724c+%5Cu7248%5Cu6743%5Cu6240%5Cu6709%22%7D&u=1&autologin=no';-->
+                        <!--}, 1500);-->
+                        <!--return;-->
+                    <!--}-->
+                    <!--if ("urlerror" == rs.status) return $(".error-link-tip").removeClass("none");-->
+                    <!--if (rs.status == 'success') {-->
+                        <!--//页面层-->
+                        <!--layer.open({-->
+                            <!--type: 1,-->
+                            <!--content: $('#tpl_qr').val().substitute({ short_url: rs.data.url }),-->
+                            <!--success: function (elem) {-->
+                                <!--toqrcode(rs.data.url, rs.data.qrlogo || '');-->
+                                <!--$(".new-transform-code", elem).data('id', rs.data.id);-->
+                            <!--}-->
+                        <!--});-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+        <!--$('.js-shopurl').on('blur', function () {-->
+            <!--var shopurl = $(this).val().trim();-->
+            <!--$(".error-link-tip").hasClass("none") || $(".error-link-tip").addClass("none");-->
+            <!--/^\/\//.test(shopurl) && (shopurl = shopurl.replace(/^\/\//, "http://"));-->
+            <!--/^hppt:\/\//.test(shopurl) && (shopurl = shopurl.replace(/^hppt:\/\//, "http://"));-->
+            <!--/^https\/\/:/.test(shopurl) && (shopurl = shopurl.replace(/^https\/\/:/, "https://"));-->
+            <!--/^ttps:\/\//.test(shopurl) && (shopurl = shopurl.replace(/^ttps:\/\//, "https://"));-->
+            <!--if (!/^http/.test(shopurl)) {-->
+                <!--var reg = /(http|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&:\/~\+#]*[\w\-\@?^=%&\/~\+#])?/;-->
+                <!--var m = shopurl.match(reg);-->
+                <!--$.type(m) == 'array' && (shopurl = m[0]);-->
+            <!--}-->
+            <!--if (shopurl) {-->
+                <!--(/^http/.test(shopurl) || /^\/\//.test(shopurl)) || (shopurl = "http://" + shopurl);-->
+            <!--}-->
+            <!--$(this).val(shopurl);-->
+        <!--}).on('focus', function () {-->
+            <!--$(this).select();-->
+        <!--});-->
+        <!--function toqrcode(text, imgsrc) {-->
+            <!--text = text ? text : $('#qcode_img').data('text');-->
+            <!--var options = {-->
+                <!--render: "canvas",-->
+                <!--margin: 10, //边距-->
+                <!--width: 200,-->
+                <!--height: 200,-->
+                <!--text: text, //二维码内容-->
+                <!--imgsrc: imgsrc, //logo图片-->
+                <!--onload: function (canvas) {-->
+                    <!--$(this).html('<img src="' + canvas.toDataURL('image/png') + '"/>');-->
+                <!--}-->
+            <!--};-->
+            <!--$('#qcode_img').html('').data('text', text).qrcode(options);-->
+        <!--}-->
+        <!--$('body').on('click', '.js-qxlogo', function () {-->
+            <!--toqrcode();-->
+        <!--});-->
+        <!--$('body').on('change', '.js-uplogo input', function () {-->
+            <!--var data = new FormData, vthis = this;-->
+            <!--data.append("img", this.files[0]);-->
+            <!--data.append("qrlogo", 1);-->
+            <!--data.append("id", $(".new-transform-code").data('id'));-->
+            <!--$.ajax({-->
+                <!--url: '/Admin/Shop/save_upload.html',-->
+                <!--type: "POST",-->
+                <!--data: data,-->
+                <!--dataType: 'json',-->
+                <!--processData: false,-->
+                <!--contentType: false,-->
+                <!--success: function (rs) {-->
+                    <!--if (rs.msg) layer.msg(rs.msg);-->
+                    <!--var newElement = $(vthis).clone(true);-->
+                    <!--$(vthis).before(newElement);-->
+                    <!--$(vthis).remove();-->
+                    <!--if (rs.status == 'no_login') {-->
+                        <!--setTimeout(function () {-->
+                            <!--window.location.href = 'http://auth.kbstore.cn/apilogin/flag/8?referer=http%3A%2F%2Ftaobao.kbstore.cn%2FAdmin%2FWap%3Fflag%3D8&code=TaoWX&data=%7B%22logo%22%3A%22http%3A%5C%2F%5C%2Ftaobao.kbstore.cn%5C%2FPublic%5C%2Fimages%5C%2Flogo-1.png%22%2C%22logo_url%22%3A%22http%3A%5C%2F%5C%2Ftaobao.kbstore.cn%5C%2FAdmin%3Fflag%3D8%22%2C%22title%22%3A%22%5Cu6dd8%5Cu8fdb%5Cu5fae%5Cu4fe1-%5Cu5546%5Cu5bb6%5Cu7248%22%2C%22bgcolor%22%3A%22%23ffae0b%22%2C%22footer%22%3A%22%5Cu00a9+2015-2017+%5Cu5e97%5Cu62c9%5Cu62c9%5Cu65d7%5Cu4e0b%5Cu54c1%5Cu724c+%5Cu7248%5Cu6743%5Cu6240%5Cu6709%22%7D&u=1&autologin=no';-->
+                        <!--}, 2000);-->
+                        <!--return;-->
+                    <!--}-->
+                    <!--if (rs.status == 'success') {-->
+                        <!--toqrcode('', rs.url);-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+    <!--})();-->
+    <!--function clipboardcopy() {-->
+        <!--var clipboard = new Clipboard('[data-clipboard-text],[data-clipboard-target]');-->
+        <!--clipboard.on('success', function (e) {-->
+            <!--layer.msg('复制成功');-->
+        <!--});-->
+    <!--}-->
+    <!--clipboardcopy();-->
+<!--</script>-->
+<div style="display: none">
+    <script type="text/javascript">var cnzz_protocol =" https://"; document.write(unescape("%3Cspan id='cnzz_stat_icon_1261985479'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s22.cnzz.com/z_stat.php%3Fid%3D1261985479' type='text/javascript'%3E%3C/script%3E"));</script><span id="cnzz_stat_icon_1261985479"><a href="http://www.cnzz.com/stat/website.php?web_id=1261985479" target="_blank" title="站长统计">站长统计</a></span><script src=" https://s22.cnzz.com/z_stat.php?id=1261985479" type="text/javascript"></script><script src="https://c.cnzz.com/core.php?web_id=1261985479&amp;t=z" charset="utf-8" type="text/javascript"></script>
+</div>
+
+<script src="js/clipboard.min.js" type="text/javascript"></script>
+<script>
+    $(function(){
+//        点击转换网址
+        $(".js-transform").click(function(){
+            $("#layui-m-layer1").show();
+
+//            地址错误的情况
+//            var ospan = $("<span></span>");
+//            ospan.addClass("center_tishi");
+//            ospan.text("地址错误！请输入正确的网址");
+//            $("body").append(ospan);
+//            setTimeout(function(){
+//                ospan.remove();
+//            },1500);
+        });
+        $(".layui-m-layershade").click(function(){
+            $(this).parent().hide();
+        });
+        $("#fuzhi").click(function(){
+            var clipboard = new Clipboard('#fuzhi');
+            clipboard.on('success', function (e) {
+                var ospan = $("<span></span>");
+                ospan.addClass("center_tishi");
+                ospan.text("复制成功");
+                $("body").append(ospan);
+                setTimeout(function(){
+                    ospan.remove();
+                },800);
+            });
+            clipboard.on('error', function (e) {
+                var ospan = $("<span></span>");
+                ospan.addClass("center_tishi");
+                ospan.text("复制失败，请手动复制");
+                $("body").append(ospan);
+                setTimeout(function(){
+                    ospan.remove();
+                },500);
+            });
+        });
+    });
+
+</script>
+
+</body></html>
