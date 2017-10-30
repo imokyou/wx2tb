@@ -31,7 +31,7 @@ class Index  extends Controller
             $req = Request::instance();
 
             $url = $req->post('url');
-            # $url = 'https://detail.tmall.com/item.htm?spm=a1z10.4-b-s.w5003-15646340731.2.227f4e3flGEZVP&id=559983439811&scene=taobao_shop&skuId=3493501272522';
+            # $url = 'https://item.taobao.com/item.htm?spm=a21bo.2017.201867-rmds-0.1.653394dexZB3w5&scm=1007.12807.84406.100200300000002&id=558714520555&pvid=01f73dfc-9b54-420f-b8c2-01aea2122e8d';
             if(empty($url)) {
                 throw new \Exception("Arg Missing", -1024);
             }
@@ -57,9 +57,8 @@ class Index  extends Controller
                 $html = iconv("gbk", "utf8", $html);
             }
             preg_match("/<title>(.*)<\/title>/i",$html, $title);
-            $data['d']['title'] = $title[1];
+            $data['d']['title'] = iconv("gbk", "utf8", $title[1]);
             
-
             $tconfig = Config::get('tpwd');
             $topClient = new \TopClient();
             $topClient->appkey = $tconfig['appkey'];
@@ -74,6 +73,7 @@ class Index  extends Controller
 
             $req->setTpwdParam(json_encode($tpwd_param));
             $resp = $topClient->execute($req);
+            print_r($resp);die;
             $data['d']['code'] = $resp->model;
 
             $material = new Material;
