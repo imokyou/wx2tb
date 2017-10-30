@@ -19,6 +19,7 @@ Route::rule('surl/refresh$', 'index/SUrl/refresh');
 
 
 Route::rule('qrcode/$', 'index/Index/qrcode');
+Route::rule('checklogin/$', 'index/Index/checklogin');
 Route::rule('tpwd/$', 'index/Index/tpwd');
 Route::rule('wx2tb/$', 'index/Msg/index');
 
