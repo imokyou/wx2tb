@@ -73,7 +73,6 @@ class Index  extends Controller
 
             $req->setTpwdParam(json_encode($tpwd_param));
             $resp = $topClient->execute($req);
-            print_r($resp);die;
             $data['d']['code'] = $resp->model;
 
             $material = new Material;
