@@ -8,7 +8,7 @@ use think\Config;
 use think\Session;
 
 use app\index\model\Material;
-
+use app\index\model\User;
 
 class Index  extends Controller
 {
