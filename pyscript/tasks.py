@@ -1,6 +1,7 @@
 # coding=utf8
 from gevent import monkey;monkey.patch_all()
 from gevent.pool import Pool
+import traceback
 import hashlib
 import requests
 import urllib
@@ -53,6 +54,7 @@ def decrynt_code(task):
     if material['origin_url'] and not material['code']:
         cinfo = tpwd.get_tpwd(material['origin_url'])
         if not cinfo:
+            logging.info('链接转淘口令失败！')
             return ret
         else:
             material['code'] = cinfo['code']
@@ -207,8 +209,10 @@ def send_msg(task):
     try:
         decrynt_data = decrynt_code(task)
         if not decrynt_data:
+            logging.info('解密失败')
             return None
     except:
+        traceback.print_exc()
         return None
 
     try:
@@ -216,6 +220,7 @@ def send_msg(task):
         data = dict(decrynt_data.items() + short_data.items())
         _mgr.material_update(task['material_id'], data)
     except:
+        traceback.print_exc()
         return None
 
     tcode = json.loads(data['ext'])
@@ -229,6 +234,7 @@ def send_msg(task):
         send_custom_text(task['account'].encode('utf8'), text)
         send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
     except:
+        traceback.print_exc()
         pass
 
 
