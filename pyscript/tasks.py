@@ -232,10 +232,12 @@ def send_msg(task):
 
     try:
         send_custom_text(task['account'].encode('utf8'), text)
+    except:
+        traceback.print_exc()
+    try:
         send_custom_img(task['account'].encode('utf8'), tcode['picUrl'])
     except:
         traceback.print_exc()
-        pass
 
 
 def should_send():
