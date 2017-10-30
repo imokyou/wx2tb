@@ -39,7 +39,7 @@ def get_item_byhttp(url):
     try:
         resp = requests.get(url)
         if resp and resp.status_code == 200:
-            soup = BeautifulSoup(resp.content, 'lxml')
+            soup = BeautifulSoup(resp.text, 'lxml')
             img = soup.find("img", id="J_ImgBooth")
 
             ret = {
@@ -103,7 +103,7 @@ def get_tpwd(url):
 
 if __name__ == '__main__':
     # get_tpwd('https://www.taobao.com/markets/tbhome/crowd-guide?spm=a21bo.2017.201868.6.80e38db0UT58I&id=930&itemId=528585399004&pvid=9aa1a92c-7fa1-4cc9-b9b3-aa220a6d144e&scm=1007.12952.88560.100200300000000')
-    ret = get_tpwd('https://item.taobao.com/item.htm?spm=2013.1.20141001.2.493f7caeZzVNAx&id=558959135364&scm=1007.12144.81309.42296_42296&pvid=9d2baedf-dee0-451e-964b-ba7be3489f5c')
+    ret = get_tpwd('https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w5003-17161651896.10.6baabb74pl0bLm&id=559467978762&scene=taobao_shop')
     if ret:
         print ret
         print ret['code']
