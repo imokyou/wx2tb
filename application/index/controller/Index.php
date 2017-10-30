@@ -142,7 +142,8 @@ class Index  extends Controller
             }
             $data['d'] = [
                 'uniqid'=> $ticket['uniqid'],
-                'qrcode' => base64_encode($qrcode)
+                'qrcode' => base64_encode($qrcode),
+                'ticket' => $ticket['ticket']
             ];
 
         } catch (\Exception $e) {
@@ -150,6 +151,42 @@ class Index  extends Controller
         }
         return Response::create($data, 'json')->code(200);
     } 
+
+    public function checklogin()
+    {
+        try {
+            $data = ['c' => 0, 'm' => '', 'd' => []];
+
+            if(!empty($this->userinfo)) {
+                $data['d'] = $this->userinfo;
+            } else {
+                $req = Request::instance();
+                $ticket = $req->post('ticket');
+                if(empty($ticket)) {
+                    throw new \Exception("Arg Missing", 1);
+                }
+
+                $user = User::get(['ticket' => $ticket]);
+                if(empty($user)) {
+                    throw new \Exception("Data Missing", 1);
+                }
+
+                $ext = json_decode($user['ext'], true);
+                $this->userinfo = [
+                    'nickname' => $user->nickname,
+                    'id' => $user->id,
+                    'avatar' => $ext['headimgurl']
+                ];
+                Session::set('userinfo', $this->userinfo);
+                Cookie::set('userinfo', $this->userinfo, 3600*24);
+                $data['d'] = $this->userinfo;
+            }
+
+        } catch (\Exception $e) {
+            $data = ['c' => -1024, 'm' => $e->getMessage(), 'd' => []];
+        }
+        return Response::create($data, 'json')->code(200);
+    }
 
     public function agent()
     {
