@@ -175,7 +175,8 @@ class Index  extends Controller
                 $this->userinfo = [
                     'nickname' => $user->nickname,
                     'id' => $user->id,
-                    'avatar' => $ext['headimgurl']
+                    'avatar' => $ext['headimgurl'],
+                    'update_time' => $user->update_time
                 ];
                 Session::set('userinfo', $this->userinfo);
                 Cookie::set('userinfo', $this->userinfo, 3600*24);
