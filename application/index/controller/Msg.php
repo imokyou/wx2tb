@@ -220,7 +220,7 @@ class Msg extends Controller
 
     private function _get_userinfo($openid)
     {
-        $token = $this->_get_wx_token()
+        $token = $this->_get_wx_token();
         $api = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$token['access_token'].'&openid='.$openid.'&lang=zh_CN';
         $resp = curl_get($api);
         $resp = json_decode($resp, true);

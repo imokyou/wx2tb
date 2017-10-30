@@ -378,7 +378,6 @@ $(function () {
             async: false,
             success: function(resp) {
                 if(resp.c == 0) {
-                    alert(resp.d['uniqid']);
                     $('#qrcode-login').attr('src', "data:image/jpeg;base64,"+resp.d['qrcode']);
                     $('#layui-layer5').show();
                 } else {
@@ -386,7 +385,7 @@ $(function () {
                 }
             },
             error: function() {
-                alert(3333333);
+                //alert(3333333);
             }
         });
     });
