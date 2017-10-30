@@ -133,7 +133,12 @@
                             <input class="url-input w pl20 js-shopurl" placeholder="输入淘宝/天猫店铺首页或商品详情页链接" id="origin-url" type="text"
                                    value="">
                         </div>
-                        <div class="table-cell btn-transform w130 pointer js-transform tc">转换网址</div>
+                        <?php if(!empty($userinfo)){ ?>
+                        <div class="table-cell btn-transform w130 pointer js-transform tc" id="js-transform">转换网址</div>
+                        <?php }else{ ?>
+
+                        <div class="table-cell btn-transform w130 pointer js-transform tc" id="js-showcode">转换网址</div>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
@@ -257,7 +262,7 @@
 
 <!--成功-->
 <div class="layui-layer layui-layer-page layer-anim tranlate none" id="layui-layer3" type="page" times="3" showtime="0"
-     contype="string" style="z-index: 999; width: 380px; top: 239.5px; left:50%;margin-left: -190px;">
+     contype="string" style="z-index: 999; width: 380px; top: 100px; left:50%;margin-left: -190px;">
     <div id="" class="layui-layer-content" style="">
         <div class="new-transform-code p20" style="margin: auto">
             <p class="tc f16 mb10">恭喜您！微信推广链接已生成</p>
@@ -272,6 +277,24 @@
     <span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close2"
                                         href="javascript:;"></a></span><span class="layui-layer-resize"></span>
 </div>
+
+
+<div class="layui-layer layui-layer-page layer-anim tranlate none" id="layui-layer5" type="page" times="3" showtime="0"
+     contype="string" style="z-index: 999; width: 380px; top: 100px; left:50%;margin-left: -190px;">
+    <div id="" class="layui-layer-content" style="">
+        <div class="new-transform-code p20" style="margin: auto">
+            <p class="tc f16 mb10">微信登陆</p>
+            <div style="display:inline-block; text-align:left;">
+                <img src="" id="qrcode-login" /> 
+                <p class="tc">微信扫描二维码或查找公众号 游米宝盒</p>
+            </div>
+            
+        </div>
+    </div>
+    <span class="layui-layer-setwin"><a class="layui-layer-ico layui-layer-close layui-layer-close2"
+                                        href="javascript:;"></a></span><span class="layui-layer-resize"></span>
+</div>
+
 
 <iframe name="downloadframe" id="downloadframe" class="none"></iframe>
 <form target="downloadframe" action="/Admin/Index/qcodedownload.html" method="post" class="none">
@@ -300,67 +323,98 @@
 
 <script src="/static/js/clipboard.min.js" type="text/javascript"></script>
 <script>
-    $(function () {
-        $(".layui-layer-close").click(function () {
-            $(".mask").hide();
-            $(".layui-layer").hide();
-        })
-        $(".login").click(function () {
-            $(".mask").show();
-            $("#layui-layer2").show();
-        })
-        $(".js-transform").click(function(){
-            var origin_url = $('#origin-url').val();
-            if (origin_url == '') {
-                alert('请输入需要转换的网址');
-                return false;
-            } 
+function showCode()
+{
 
-            $(".mask").show();
-            $.ajax({
-                url: '/tpwd',
-                type: 'POST',
-                dataType: 'JSON',
-                data: {'url': origin_url},
-                success: function(resp) {
-                    if(resp.c == 0) {
-                        $('#short-url').html(resp.d['short_url']);
-                        $("#layui-layer3").show();
-                    } else {
-                        $("#layui-layer4").show();
-                    }
-                },
-                error: function() {
+}
+function urldecode (str) 
+{
+  return decodeURIComponent((str + '').replace(/\+/g, '%20'));
+}
+
+$(function () {
+    $(".layui-layer-close").click(function () {
+        $(".mask").hide();
+        $(".layui-layer").hide();
+    })
+    $(".login").click(function () {
+        $(".mask").show();
+        $("#layui-layer2").show();
+    })
+    $("#js-transform").click(function(){
+        var origin_url = $('#origin-url').val();
+        if (origin_url == '') {
+            alert('请输入需要转换的网址');
+            return false;
+        }
+
+        $(".mask").show();
+        $.ajax({
+            url: '/tpwd',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {'url': origin_url},
+            success: function(resp) {
+                if(resp.c == 0) {
+                    $('#short-url').html(resp.d['short_url']);
+                    $("#layui-layer3").show();
+                } else {
                     $("#layui-layer4").show();
                 }
-            });
-        })
+            },
+            error: function() {
+                $("#layui-layer4").show();
+            }
+        });
+    });
 
 
-        $("#fuzhi").click(function(){
-            var clipboard = new Clipboard('#fuzhi');
-            clipboard.on('success', function (e) {
-                var ospan = $("<span></span>");
-                ospan.addClass("center_tishi");
-                ospan.text("复制成功");
-                $("body").append(ospan);
-                setTimeout(function(){
-                    ospan.remove();
-                },800);
-            });
-            clipboard.on('error', function (e) {
-                var ospan = $("<span></span>");
-                ospan.addClass("center_tishi");
-                ospan.text("复制失败，请手动复制");
-                $("body").append(ospan);
-                setTimeout(function(){
-                    ospan.remove();
-                },500);
-            });
+    $("#js-showcode").click(function(){
+        $.ajax({
+            url: '/qrcode',
+            type: 'POST',
+            dataType: 'JSON',
+            data: {},
+            async: false,
+            success: function(resp) {
+                if(resp.c == 0) {
+                    alert(resp.d['uniqid']);
+                    $('#qrcode-login').attr('src', "data:image/jpeg;base64,"+resp.d['qrcode']);
+                    $('#layui-layer5').show();
+                } else {
+                    alert(resp.m);
+                }
+            },
+            error: function() {
+                alert(3333333);
+            }
+        });
+    });
 
+    $("#fuzhi").click(function(){
+        var clipboard = new Clipboard('#fuzhi');
+        clipboard.on('success', function (e) {
+            var ospan = $("<span></span>");
+            ospan.addClass("center_tishi");
+            ospan.text("复制成功");
+            $("body").append(ospan);
+            setTimeout(function(){
+                ospan.remove();
+            },800);
+        });
+        clipboard.on('error', function (e) {
+            var ospan = $("<span></span>");
+            ospan.addClass("center_tishi");
+            ospan.text("复制失败，请手动复制");
+            $("body").append(ospan);
+            setTimeout(function(){
+                ospan.remove();
+            },500);
         });
 
-    })
+    });
+
+})
 
 </script>
 

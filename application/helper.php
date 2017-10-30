@@ -108,3 +108,7 @@ function url_valid($url) {
     }
     return $flag;
 }
+
+function get_uniqid() {
+    return md5(uniqid(rand(), true));
+}

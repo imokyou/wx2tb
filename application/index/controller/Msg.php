@@ -11,6 +11,7 @@ use think\Db;
 use app\index\model\Material;
 use app\index\model\ConvertTimes;
 use app\index\model\UserTask;
+use app\index\model\User;
 
 class Msg extends Controller
 {
@@ -45,15 +46,48 @@ class Msg extends Controller
             return 'success';
         }
 
-        if($origin_data['MsgType'] == 'event' && $origin_data['Event'] == 'subscribe') {
-            $resp_data = array(
-                'ToUserName' => $origin_data['FromUserName'],
-                'FromUserName' => $origin_data['ToUserName'],
-                'CreateTime' => time(),
-                'MsgType' => 'text',
-                'Content' => "哎哟喂~~同志\n现在淘宝和天猫链接终于可以在微信上直接打开了\n只需要发送淘宝或天猫口令给我，系统就会自动将口令转为短链接，实现一秒进店啦！\n作为一个专业的淘宝客服务平台，我们坚持只做一个免费的口令转换器，不会抽取任何优惠券佣金噢！！！"
-            );
-            return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+        if($origin_data['MsgType'] == 'event') {
+            if($origin_data['Event'] == 'subscribe') {
+                $resp_data = array(
+                    'ToUserName' => $origin_data['FromUserName'],
+                    'FromUserName' => $origin_data['ToUserName'],
+                    'CreateTime' => time(),
+                    'MsgType' => 'text',
+                    'Content' => "哎哟喂~~同志\n现在淘宝和天猫链接终于可以在微信上直接打开了\n只需要发送淘宝或天猫口令给我，系统就会自动将口令转为短链接，实现一秒进店啦！\n作为一个专业的淘宝客服务平台，我们坚持只做一个免费的口令转换器，不会抽取任何优惠券佣金噢！！！"
+                );
+                return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+            } else if($origin_data['Event'] == 'SCAN') {
+                $nickname = '';
+                $user = User::get(['openid' => $origin_data['FromUserName']]);
+                if($user) {
+                    $nickname = $user->nickname;
+                    $user->ticket = $origin_data['Ticket'];
+                    $user->save();
+                } else {
+                    $userinfo = $this->_get_userinfo($origin_data['FromUserName']);
+                    if(!empty($userinfo)) {
+                        $nickname = $userinfo['nickname'];
+
+                        $user = new User;
+                        $user->data([
+                            'nickname' => $userinfo['nickname'],
+                            'openid' => $userinfo['openid'],
+                            'ticket' => $origin_data['Ticket'],
+                            'ext' => json_encode($userinfo)
+                        ]);
+                        $user->save();
+                    }
+                }
+                $resp_data = array(
+                    'ToUserName' => $origin_data['FromUserName'],
+                    'FromUserName' => $origin_data['ToUserName'],
+                    'CreateTime' => time(),
+                    'MsgType' => 'text',
+                    'Content' => "欢迎回来, {$nickname}"
+                );
+                return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+            }
+            return 'success';
         }
 
         $code_url = ['code'=> '', 'url'=> ''];
@@ -182,5 +216,42 @@ class Msg extends Controller
             'is_sended' => 0
         ]);
         $user_task->save();
+    }
+
+    private function _get_userinfo($openid)
+    {
+        $token = $this->_get_wx_token()
+        $api = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$token['access_token'].'&openid='.$openid.'&lang=zh_CN';
+        $resp = curl_get($api);
+        $resp = json_decode($resp, true);
+        return $resp;
+    }
+
+
+    private function _get_wx_token()
+    {
+        $token = [];
+        $token_expired = true;
+
+        $token_file = './../application/extra/wx_access_token.txt';
+        if(file_exists($token_file)){
+            $token = json_decode(file_get_contents($token_file), true);
+            if(!empty($token)) {
+                if($token['expires_time']-time()-1000 > 0) {
+                    $token_expired = false;
+                } 
+            }
+        }
+
+        if($token_expired) {
+            $config = Config::get('wxmsg');
+            $resp = curl_post($config['token_api']);
+            $token = json_decode($resp, true);
+            if(!empty($token) && array_key_exists('access_token', $token)) {
+                $token['expires_time'] = time() + $token['expires_in'];
+                file_put_contents($token_file, json_encode($token));
+            }
+        }
+        return $token;
     }
 }

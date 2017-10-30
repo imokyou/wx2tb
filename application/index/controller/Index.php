@@ -5,13 +5,22 @@ use think\Controller;
 use think\Response;
 use think\Request;
 use think\Config;
+use think\Session;
+
 use app\index\model\Material;
 
 
 class Index  extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->userinfo = Session::get('userinfo') ? Session::get('userinfo') : [];
+    }
+
     public function index()
     {
+        $this->assign('userinfo', $this->userinfo);
         return $this->fetch('index');
     }
 
@@ -108,6 +117,40 @@ class Index  extends Controller
         return Response::create($data, 'json')->code(200);
     }
 
+    public function qrcode()
+    {
+        try {
+            $data = ['c' => 0, 'm' => '', 'd' => []];
+
+            if(!empty($this->userinfo)) {
+                throw new \Exception("Request Error", -1024);   
+            }
+
+            $wx_token = $this->_get_wx_token();
+            if(empty($wx_token)) {
+                throw new \Exception("Something Error", -1024);
+            }
+
+            $ticket = $this->_get_ticket($wx_token);
+            if(empty($ticket)) {
+                throw new \Exception("Something Error", -1024);
+            }
+
+            $qrcode = $this->_get_qrcode($ticket);
+            if(empty($qrcode)) {
+                throw new \Exception("Something Error", -1024);
+            }
+            $data['d'] = [
+                'uniqid'=> $ticket['uniqid'],
+                'qrcode' => base64_encode($qrcode)
+            ];
+
+        } catch (\Exception $e) {
+            $data = ['c' => -1024, 'm' => $e->getMessage(), 'd' => []];
+        }
+        return Response::create($data, 'json')->code(200);
+    } 
+
     public function agent()
     {
         $agent = Request::instance()->header('user-agent');
@@ -117,6 +160,59 @@ class Index  extends Controller
     private function _get_domain($domains)
     {
         return $domains[rand(0, count($domains)-1)];
+    }
+
+    private function _get_wx_token()
+    {
+        $token = [];
+        $token_expired = true;
+
+        $token_file = './../application/extra/wx_access_token.txt';
+        if(file_exists($token_file)){
+            $token = json_decode(file_get_contents($token_file), true);
+            if(!empty($token)) {
+                if($token['expires_time']-time()-1000 > 0) {
+                    $token_expired = false;
+                } 
+            }
+        }
+
+        if($token_expired) {
+            $config = Config::get('wxmsg');
+            $resp = curl_post($config['token_api']);
+            $token = json_decode($resp, true);
+            if(!empty($token) && array_key_exists('access_token', $token)) {
+                $token['expires_time'] = time() + $token['expires_in'];
+                file_put_contents($token_file, json_encode($token));
+            }
+        }
+        return $token;
+    }
+
+    private function _get_ticket($wx_token)
+    {
+        $uniqid = get_uniqid();
+        $api = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token='.$wx_token['access_token'];
+        $req_data = [
+            'expire_seconds'=> 120,
+            'action_name'=> 'QR_STR_SCENE',
+            'action_info'=> [
+                'scene'=> ['scene_str'=> $uniqid]
+            ]
+        ];
+        $resp = curl_post($api, json_encode($req_data));
+        $resp = json_decode($resp, true);
+        if(!empty($resp) && array_key_exists('ticket', $resp)) {
+            $resp['uniqid'] = $uniqid;
+        }
+        return $resp;
+    }
+
+    private function _get_qrcode($ticket)
+    {
+        $api = 'https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket='.urlencode($ticket['ticket']);
+        $resp = curl_get($api);
+        return $resp;
     }
 
 }
