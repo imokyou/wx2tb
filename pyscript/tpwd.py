@@ -63,9 +63,9 @@ def set_param(url):
     item = get_item_byhttp(url)
 
     if item:
-        ret['text'] = item['content']
+        ret['text'] = item['content'].encode('utf8')
     if item.get('pic_url', ''):
-        ret['logo'] = item['pic_url']
+        ret['logo'] = item['pic_url'].encode('utf8')
     return ret
 
 
@@ -75,6 +75,7 @@ def get_code_from_tb(api, data, retry=0):
             return None
         resp = requests.post(TPWD['api'], data, timeout=10)
         content = resp.json()
+        logging.info(content)
         return content['wireless_share_tpwd_create_response']['model']
     except:
         retry += 1
@@ -89,19 +90,21 @@ def get_tpwd(url):
     data['method'] = 'taobao.wireless.share.tpwd.create'
     data['timestamp'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     data['tpwd_param'] = json.dumps(tpwd_param)
+
     sign = get_sign(TPWD['appsecret'], data)
     data['sign'] = sign
 
     try:
         content = get_code_from_tb(TPWD['api'], data)
-        ret = {'code': content}
+        if content:
+            ret = {'code': content}
     except:
         traceback.print_exc()
     return ret
 
 if __name__ == '__main__':
     # get_tpwd('https://www.taobao.com/markets/tbhome/crowd-guide?spm=a21bo.2017.201868.6.80e38db0UT58I&id=930&itemId=528585399004&pvid=9aa1a92c-7fa1-4cc9-b9b3-aa220a6d144e&scm=1007.12952.88560.100200300000000')
-    ret = get_tpwd('https://item.taobao.com/item.htm?spm=a1z10.1-c-s.w5003-17161651896.10.6baabb74pl0bLm&id=559467978762&scene=taobao_shop')
+    ret = get_tpwd('https://detail.tmall.com/item.htm?spm=a220o.1000855.1998025129.3.3de87b95IHuGAa&abtest=_AB-LR32-PR32&pvid=ced5603a-a64a-49fc-a6c0-ead532083a14&pos=3&abbucket=_AB-M32_B9&acm=03054.1003.1.2290611&id=528574511435&scm=1007.12144.81309.23864_0')
     if ret:
         print ret
         print ret['code']
