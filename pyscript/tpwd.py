@@ -69,18 +69,16 @@ def set_param(url):
     return ret
 
 
-def get_page(api, data, retry=0):
+def get_code_from_tb(api, data, retry=0):
     try:
-        if retry >= 4:
+        if retry >= 6:
             return None
         resp = requests.post(TPWD['api'], data, timeout=10)
-        if resp.status_code != 200:
-            retry += 1
-            get_page(api, data, retry)
-        return resp.json()
+        content = resp.json()
+        return content['wireless_share_tpwd_create_response']['model']
     except:
         retry += 1
-        get_page(api, data, retry)
+        return get_page(api, data, retry)
 
 
 def get_tpwd(url):
@@ -95,8 +93,8 @@ def get_tpwd(url):
     data['sign'] = sign
 
     try:
-        content = get_page(TPWD['api'], data)
-        ret = {'code': content['wireless_share_tpwd_create_response']['model']}
+        content = get_code_from_tb(TPWD['api'], data)
+        ret = {'code': content}
     except:
         traceback.print_exc()
     return ret
