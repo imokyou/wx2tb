@@ -3,6 +3,7 @@ import traceback
 import requests
 import hashlib
 import json
+import copy
 from datetime import datetime
 from bs4 import BeautifulSoup
 from settings import *
@@ -75,7 +76,6 @@ def get_code_from_tb(api, data, retry=0):
             return None
         resp = requests.post(TPWD['api'], data, timeout=10)
         content = resp.json()
-        logging.info(content)
         return content['wireless_share_tpwd_create_response']['model']
     except:
         retry += 1
@@ -92,10 +92,12 @@ def get_tpwd(url):
     data['tpwd_param'] = json.dumps(tpwd_param)
 
     sign = get_sign(TPWD['appsecret'], data)
-    data['sign'] = sign
+
+    params = copy.copy(data)
+    params['sign'] = sign
 
     try:
-        content = get_code_from_tb(TPWD['api'], data)
+        content = get_code_from_tb(TPWD['api'], params)
         if content:
             ret = {'code': content}
     except:
