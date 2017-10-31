@@ -52,12 +52,10 @@ class Index  extends Controller
             }
 
             $html = curl_get($url);
-            $pos = strpos($html,'utf8');
-            if($pos===false) {
-                $html = iconv("gbk", "utf8", $html);
-            }
+            $html = mb_convert_encoding($html, 'utf8');
             preg_match("/<title>(.*)<\/title>/i",$html, $title);
-            $data['d']['title'] = iconv("gbk", "utf8", $title[1]);
+            $data['d']['title'] = $title[1];
+            
             
             $tconfig = Config::get('tpwd');
             $topClient = new \TopClient();
