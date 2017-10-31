@@ -78,7 +78,7 @@ def get_code_from_tb(api, data, retry=0):
         return content['wireless_share_tpwd_create_response']['model']
     except:
         retry += 1
-        return get_page(api, data, retry)
+        return get_code_from_tb(api, data, retry)
 
 
 def get_tpwd(url):
