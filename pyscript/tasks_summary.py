@@ -4,6 +4,7 @@ from gevent.pool import Pool
 import traceback
 import json
 import requests
+from datetime import datetime
 from settings import *
 from models import *
 import wxtoken
@@ -21,7 +22,9 @@ def send_custom_text(account):
     wx_access_token = wxtoken.get_token()
 
     touser = account['account'].encode('utf8')
-    text = '报客官, 经统计您转换的短链接点击次数已达到整整{}次!!!'.format(account['clicks'])
+    currtime = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    text = '报客官, 截止 {} 您转换的短链接点击次数合计已达到整整 {} 次!!!'.format(currtime, account['clicks'])
+
     params = {
         "touser": touser,
         "msgtype": "text",
