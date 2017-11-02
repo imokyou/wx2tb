@@ -205,3 +205,22 @@ class Mgr(object):
         finally:
             self.session.close()
         return ret
+
+    def get_account_summary(self):
+        try:
+            ret = []
+
+            sql = "SELECT account, SUM(click_count) AS clicks FROM material GROUP BY account"
+            rows = self.session.execute(sql)
+            for row in rows:
+                if 'web' in row.account or not row.account or row.clicks == 0:
+                    continue
+                ret.append({
+                    'account': row.account,
+                    'clicks': int(row.clicks)
+                })
+        except Exception as e:
+            logging.warning("get account summary error : %s" % e, exc_info=True)
+        finally:
+            self.session.close()
+        return ret
