@@ -67,6 +67,17 @@ CREATE TABLE IF NOT EXISTS `user_tasks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
+
+CREATE TABLE IF NOT EXISTS `user_report_tasks` (
+    `id` INT(11) NOT NULL AUTO_INCREMENT,
+    `account` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '转换人ID',
+    `is_sended` INT(11) NOT NULL DEFAULT '0' COMMENT '是否发送了',
+    `create_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    `update_time` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+    PRIMARY KEY (`id`) 
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
 CREATE TABLE IF NOT EXISTS `users` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `nickname` VARCHAR(64) NOT NULL COMMENT '用户昵称',

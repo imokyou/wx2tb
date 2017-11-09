@@ -12,6 +12,7 @@ use app\index\model\Material;
 use app\index\model\ConvertTimes;
 use app\index\model\UserTask;
 use app\index\model\User;
+use app\index\model\UserReportTask;
 
 class Msg extends Controller
 {
@@ -90,6 +91,18 @@ class Msg extends Controller
             return 'success';
         }
 
+        if($this->detect_keyword_msg($origin_data['Content'], $origin_data['FromUserName'])) {
+            $resp_data = array(
+                'ToUserName' => $origin_data['FromUserName'],
+                'FromUserName' => $origin_data['ToUserName'],
+                'CreateTime' => time(),
+                'MsgType' => 'text',
+                'Content' => ''
+            );
+            $resp_data['Content'] = '请稍后,正在为您查询...';
+            return Response::create($resp_data, 'xml')->code(200)->options(['root_node'=> 'xml']);
+        }
+
         $code_url = ['code'=> '', 'url'=> ''];
         $code_url = $this->detect_code_url($origin_data['Content']);
         if(empty($code_url['code']) and empty($code_url['url'])) {
@@ -163,6 +176,20 @@ class Msg extends Controller
             'is_sended' => 0
         ]);
         $user_task->save();
+    }
+
+    private function detect_keyword_msg($origin_content, $fromuser) {
+        $flag = False;
+        if($origin_content == '日报') {
+            $flag = True;
+            $user_report_task = New UserReportTask;
+            $user_report_task->data([
+                'account' => $fromuser,
+                'is_sended' => 0
+            ]);
+            $user_report_task->save();
+        }
+        return $flag;
     }
 
     private function detect_code_url($origin_content)
