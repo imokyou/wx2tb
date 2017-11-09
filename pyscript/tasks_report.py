@@ -27,19 +27,13 @@ def send_custom_text(t):
     beg = int(cur_time - (cur_time + 8 * 3600) % 86400)
     report = _mgr.get_account_report(t['account'], beg)
     if not report:
-        text = '''
-        {} 昨日\n
-        转链接数: 0条\n
-        总占击数: 0次\n
-        最高点击链接: 无\n
-        最高点击次数: 0次
-        '''.format(
+        text = '{} 昨日\n转链接数: 0条\n总占击数: 0次\n最高点击链接: 无\n最高点击次数: 0次\n'.format(
             (datetime.now()-timedelta(days=1)).strftime('%m-%d')
         )
     else:
         link_num = len(report)
         total_clicks = 0
-        top_link = '',
+        top_link = ''
         top_link_click = 0
         for r in report:
             if r['clicks'] > top_link_click:
@@ -47,13 +41,7 @@ def send_custom_text(t):
                 top_link = r['short_url']
             total_clicks += r['clicks']
 
-        text = '''
-        {} 昨日\n
-        转链接数: {}条\n
-        总占击数: {}次\n
-        最高点击链接: {}\n
-        最高点击次数: {}次
-        '''.format(
+        text = '{} 昨日\n转链接数: {}条\n总占击数: {}次\n最高点击链接: {}\n最高点击次数: {}次'.format(
             (datetime.now()-timedelta(days=1)).strftime('%m-%d'),
             link_num,
             total_clicks,
@@ -81,7 +69,7 @@ def send_custom_text(t):
 
 
 def main():
-    ts = _mgr.get_user_report_tasks()
+    ts = _mgr.get_user_report_tasks({'is_sended': 0})
     pools = Pool(10)
     pools.map(send_custom_text, ts)
 
