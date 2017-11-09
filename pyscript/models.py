@@ -6,6 +6,7 @@ from sqlalchemy import create_engine, Column, ForeignKey, String, Integer, Numer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship, backref
 from sqlalchemy.dialects.mysql import VARCHAR, BIGINT, TINYINT, DATETIME, TEXT, CHAR
+from time import time
 from settings import *
 
 Base = declarative_base()
@@ -108,6 +109,27 @@ class UserTasks(BaseModel):
         return ret
 
 
+class UserReportTasks(BaseModel):
+
+    __tablename__ = "user_report_tasks"
+
+    id = Column(Integer, primary_key=True)
+    account = Column(VARCHAR(64))
+    is_sended = Column(Integer)
+    create_time = Column(Integer)
+    update_time = Column(Integer)
+
+    def conv_result(self):
+        ret = {}
+
+        ret["id"] = self.id
+        ret["account"] = self.account
+        ret["is_sended"] = self.is_sended
+        ret["create_time"] = self.create_time
+        ret["update_time"] = self.update_time
+        return ret
+
+
 class Mgr(object):
 
     def __init__(self, engine):
@@ -135,6 +157,33 @@ class Mgr(object):
             self.session.query(UserTasks) \
                 .filter(UserTasks.id.in_(task_ids)) \
                 .update({'is_sended': 1}, synchronize_session='fetch')
+            self.session.commit()
+        except Exception as e:
+            self.session.rollback()
+            logging.warning("finish tasks error : %s" % e, exc_info=True)
+        finally:
+            self.session.close()
+
+    def get_user_report_tasks(self, params):
+        try:
+            ret = []
+            q = self.session.query(UserReportTasks)
+            if params.get('is_sended', '') != '':
+                q = q.filter(UserReportTasks.is_sended == int(params['is_sended']))
+            rows = q.all()
+            for row in rows:
+                ret.append(row.conv_result())
+        except Exception as e:
+            logging.warning("get user tasks error : %s" % e, exc_info=True)
+        finally:
+            self.session.close()
+        return ret
+
+    def finish_report_task(self, task_ids):
+        try:
+            self.session.query(UserReportTasks) \
+                .filter(UserReportTasks.id.in_(task_ids)) \
+                .update({'is_sended': 1, 'update_time': int(time())}, synchronize_session='fetch')
             self.session.commit()
         except Exception as e:
             self.session.rollback()
@@ -209,7 +258,6 @@ class Mgr(object):
     def get_account_summary(self):
         try:
             ret = []
-
             sql = "SELECT account, SUM(click_count) AS clicks FROM material GROUP BY account"
             rows = self.session.execute(sql)
             for row in rows:
@@ -224,3 +272,27 @@ class Mgr(object):
         finally:
             self.session.close()
         return ret
+
+    def get_account_report(self, account, beg):
+        try:
+            ret = []
+            sql = '''
+            SELECT
+                short_url, SUM(click_count) AS clicks FROM material
+            WHERE account = '{}' AND create_time BETWEEN {} AND {} AND short_url != ''
+            GROUP BY short_url
+            '''.format(account, beg, beg+86400)
+            rows = self.session.execute(sql)
+            for row in rows:
+                ret.append({
+                    'account': account,
+                    'short_url': row.short_url,
+                    'clicks': int(row.clicks),
+                    'date': beg
+                })
+        except Exception as e:
+            logging.warning("get account report error : %s" % e, exc_info=True)
+        finally:
+            self.session.close()
+        return ret
+
