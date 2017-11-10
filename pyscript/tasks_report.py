@@ -5,7 +5,7 @@ import traceback
 import json
 import requests
 from datetime import datetime, timedelta
-from time import time
+from time import time, sleep
 from settings import *
 from models import *
 import wxtoken
@@ -20,6 +20,8 @@ _mgr = Mgr(create_engine(_db_url, pool_recycle=10))
 
 
 def send_custom_text(t):
+    _mgr.finish_report_task([t['id']])
+
     wx_access_token = wxtoken.get_token()
 
     touser = t['account'].encode('utf8')
@@ -69,9 +71,14 @@ def send_custom_text(t):
 
 
 def main():
-    ts = _mgr.get_user_report_tasks({'is_sended': 0})
     pools = Pool(10)
-    pools.map(send_custom_text, ts)
+    while True:
+        ts = _mgr.get_user_report_tasks({'is_sended': 0})
+        if ts:
+            pools.map(send_custom_text, ts)
+        else:
+            logging.info('没有需要发送的任务')
+        sleep(TASK_INTERVAL)
 
 
 if __name__ == '__main__':
