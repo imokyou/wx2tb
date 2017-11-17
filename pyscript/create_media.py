@@ -15,7 +15,7 @@ def run(filename=''):
         'access_token': wx_access_token['access_token'],
         'type': 'image'
     }
-    api = WX['media_api'] + wx_access_token['access_token']
+    api = WX['media_api_p'] + wx_access_token['access_token']
     resp = requests.post(api, params, files={'media': open(filename, 'rb')})
     if resp and resp.status_code == 200:
         content = resp.json()
