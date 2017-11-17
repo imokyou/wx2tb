@@ -26,7 +26,7 @@ def send_custom_text(t):
 
     touser = t['account'].encode('utf8')
     cur_time = time()
-    beg = int(cur_time - (cur_time + 8 * 3600) % 86400)
+    beg = int(cur_time - (cur_time + 8 * 3600) % 86400) - 86400
     report = _mgr.get_account_report(t['account'], beg)
     if not report:
         text = '{} 昨日\n转链接数: 0条\n总占击数: 0次\n最高点击链接: 无\n最高点击次数: 0次\n'.format(
