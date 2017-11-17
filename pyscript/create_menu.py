@@ -4,6 +4,8 @@ import requests
 import wxtoken
 from settings import *
 
+# {u'url': u'http://mmbiz.qpic.cn/mmbiz_png/qNVsD0e80f20mMibnibYDVfKDAn1Ux3vXiasiaKIda3TLhglc5gzsjamWkBZDqrhjLyFnV31YhUYg8svrKa7bm9mXQ/0?wx_fmt=png', u'media_id': u'ojgSex-sKR8g6frh3NRo72EiWFxHkvOPHAS9uE5TgVM'}
+
 
 def run():
     API = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='
@@ -26,7 +28,7 @@ def run():
         }, {
             "type": "media_id",
             "name": "客服",
-            "media_id": "Xv9SYhJ_9-L_YHpVKQ64XqlNbfYdc9_kgeqqdfQ6AGbHCugxv8iEv4M-wryGVMqx",
+            "media_id": "ojgSex-sKR8g6frh3NRo72EiWFxHkvOPHAS9uE5TgVM",
         }]
     }
     api = API + wx_access_token['access_token']
