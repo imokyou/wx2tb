@@ -1,4 +1,6 @@
 # coding=utf8
+import os
+import requests
 import wxtoken
 from settings import *
 
