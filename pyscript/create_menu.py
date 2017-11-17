@@ -25,7 +25,7 @@ def run():
         }, {
             "type": "media_id",
             "name": "客服",
-            "media_id": "xxxxx",
+            "media_id": "Xv9SYhJ_9-L_YHpVKQ64XqlNbfYdc9_kgeqqdfQ6AGbHCugxv8iEv4M-wryGVMqx",
         }]
     }
     api = API + wx_access_token['access_token']
