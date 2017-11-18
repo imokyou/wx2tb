@@ -17,12 +17,12 @@ def run():
                 {
                     "type": "view",
                     "name": "淘口令转短链接操作方法",
-                    "url": "https://mp.weixin.qq.com/s?__biz=MzU1NTE1Njk2OQ==&tempkey=OTMxX2MzVHlsdjBnTlFkbFBGRC8tbElWRHJvbzhyNXhzTTRXaG1LSlhPbTRuRnhTYWlLMk1pYmt4SE8tOXVHYUwteVQ2cXpkRGdWeVZ3OUYxOExheTdkQUlQQTZ5eVR5cTJSOEZ2eVFhVlptZGRycnIxem95LVI3M2FndXh5aW9zdG1SaDljWURtTkdPMlF4eEdUTTIzaXBYYTVmdWc3X3psQ1BMSGVUS0F%2Bfg%3D%3D&chksm=7bd9d58e4cae5c985887c94ce0ef169636641d3f1c1a43764030f41a3e01548f62ad0009f0db#rd"
+                    "url": "https://mp.weixin.qq.com/s/f5xKv1vjkV-aQ-bGvozZ2A"
                 },
                 {
                     "type": "view",
                     "name": "数据统计功能",
-                    "url": "https://mp.weixin.qq.com/s?__biz=MzU1NTE1Njk2OQ==&tempkey=OTMxX0Q5QjFiV09UcTdLZWtDbE0tbElWRHJvbzhyNXhzTTRXaG1LSlhPbTRuRnhTYWlLMk1pYmt4SE8tOXVGUU1GcHVCdEFfdnc0Z0QtOFBPa2JnRkVDclZkcXZtOFpPT0dTbzJXc1RTTEhDVnliQ3ZHRmIydUdpQzNLNkxNZ3ROeUpFM3VIZVhyTzRDSzBKNnFZeXV0RUVBQzR5WXVzSWtTZlAwNVZ1cWd%2Bfg%3D%3D&chksm=7bd9d5964cae5c80c4dc57b14ea9837c56fe8aafdaa43fa18a569a699cdeaf269d222d2df550#rd"
+                    "url": "https://mp.weixin.qq.com/s/RoJqkHbW_KeXmdK2koeEEQ"
                 }
             ]
         }, {
