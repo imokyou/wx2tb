@@ -6,7 +6,12 @@ from settings import *
 def run():
     wx_access_token = wxtoken.get_token()
     api = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='+wx_access_token['access_token']
-    resp = requests.post(api, {})
+    params = {
+        "type": 'news',
+        "offset": 0,
+        "count": 20
+    }
+    resp = requests.post(api, params)
     print resp
     if resp and resp.status_code == 200:
         content = resp.json()
